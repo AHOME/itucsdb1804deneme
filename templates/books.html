@@ -2,28 +2,4 @@
 {% block title %}Books list{% endblock %}
 {% block content %}
     <h1 class="title">Books page</h1>
-    {% if books %}
-    <table class="table is-striped is-fullwidth">
-        <tr>
-        	<th>ID</th>
-        	<th>Name</th>
-        	<th>Year</th>
-        	<th>ISBN</th>
-        	<th>Number of Page</th>
-        	<th>Publisher</th>
-        	<th>Edition</th>
-        </tr>
-        {% for book_key, book in books %}
-        <tr>
-            <td>{{ book.ID }}</td>
-            <td>{{ book.name }}</td>
-            <td>{{ book.year }}</td>
-            <td>{{ book.isbn }}</td>
-            <td>{{ book.numberOfPage }}</td>
-            <td>{{ book.publisher }}</td>
-            <td>{{ book.edition }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
 {% endblock %}

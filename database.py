@@ -17,7 +17,7 @@ class Database:
                 cursor = connection.cursor()
                 cursor.execute(
                     "INSERT INTO BOOK (NAME, WRITINGYEAR, TYPE, ISBN, NUMBEROFPAGES, PUBLISHER) VALUES (%s, %s, %s, %s, %s, %s)",
-                    ("book name 1", 2017, "Book type 1", "8963251489", 178, "publisher 1"))
+                    (book.name, book.date, book.type, book.isbn, book.publisher))
                 cursor.close()
 
         def delete_book(self, book_key):

@@ -1,15 +1,16 @@
 from flask import Flask, render_template
 from database import Database
-from book import Book
+from tables import Book
 
 app = Flask(__name__)
 
 db = Database()
-db.add_book(Book("Enver", 2018, 6053326045, 784, "Türkiye İş Bankası Kültür Yayınları", 2))
-db.add_book(Book("Hayvan Çiftliği", 2018, 9750719387, 152, "Can Yayınları", 55))
-db.add_book(Book("Simyacı", 2018, 9750726439, 184, "Can Yayınları", 144))
-db.add_book(Book("Göçüp Gidenler Koleksiyoncusu", 2018, 6602026351, 168, "Doğan Kitap", 1))
-db.add_book(Book("Osmanlı Gerçekleri", 2018, 6050827644, 288, "Timaş Yayınları", 1))
+bookdb = db.book
+bookdb.add_book(Book("Enver", 2018, "tip1", 6053326045, 784, "Türkiye İş Bankası Kültür Yayınları"))
+bookdb.add_book(Book("Hayvan Çiftliği", 2018, "tür2", 9750719387, 152, "Can Yayınları"))
+bookdb.add_book(Book("Simyacı", 2018, "tür1", 9750726439, 184, "Can Yayınları"))
+bookdb.add_book(Book("Göçüp Gidenler Koleksiyoncusu", 2018, "tür3", 6602026351, 168, "Doğan Kitap"))
+bookdb.add_book(Book("Osmanlı Gerçekleri", 2018, "tür2", 6050827644, 288, "Timaş Yayınları"))
 
 @app.route("/")
 def home_page():
@@ -17,7 +18,7 @@ def home_page():
 
 @app.route("/books")
 def books_page():
-    books = db.get_books()
+    books = bookdb.get_books()
     return render_template("books.html", books=sorted(books))
 
 if __name__ == "__main__":

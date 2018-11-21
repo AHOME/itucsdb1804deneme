@@ -5,7 +5,8 @@ import datetime
 
 app = Flask(__name__)
 
-
+db = Database()
+bookdb = db.book
 
 @app.route("/")
 def home_page():
@@ -22,9 +23,6 @@ def stores_page():
     return render_template("stores.html", stores=sorted(stores))
 
 if __name__ == "__main__":
-
-	db = Database()
-	bookdb = db.book
 	bookdb.add_book(Book("Enver", 2018, "tip1", 6053326045, 784, "Türkiye İş Bankası Kültür Yayınları"))
 	bookdb.add_book(Book("Hayvan Çiftliği", 2018, "tür2", 9750719387, 152, "Can Yayınları"))
 	bookdb.add_book(Book("Simyacı", 2018, "tür1", 9750726439, 184, "Can Yayınları"))

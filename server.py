@@ -29,7 +29,7 @@ def books_page():
 
 @app.route("/stores")
 def stores_page():
-    stores = db.store.get()
+    stores = db.store.get_table()
     return render_template("stores.html", stores=sorted(stores))
 
 if __name__ == "__main__":

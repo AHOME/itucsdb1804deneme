@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from database import Database
-from tables import Book, Store
+from tables import *
 import datetime
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ bookdb.add_book(Book("Osmanlı Gerçekleri", 2018, "tür2", 6050827644, 288, "Ti
 db.store.add(Store("Store name 1", "+901234567899", 1, "email1@gmail.com", "website1.com", datetime.date(2005, 11, 18), "1 explanation explanation explanationex planationexp lanation "))
 db.store.add(Store("Store name 2", "+904563348645", 2, "email2@gmail.com", "website2.com", datetime.date(2015, 1, 8), "2 explanation explanation explanationex planationexp lanation "))
 db.store.add(Store("Store name 3", "+901456453213", 3, "email3@gmail.com", "website3.com", datetime.date(2018, 8, 25), "3 explanation explanation explanationex planationexp lanation "))
-db.comment.add(Store(11, "Title 1", "Explanation 1", datetime.datetime.now(), 11))
+db.comment.add(Comment(11, "Title 1", "Explanation 1", datetime.datetime.now(), 11))
     
 @app.route("/")
 def home_page():

@@ -1,4 +1,4 @@
-from tables import Book, Store
+from tables import *
 import psycopg2 as dbapi2
 import os
 import sys
@@ -207,4 +207,3 @@ class Database:
                 cursor.close()
 
             return comments
-            

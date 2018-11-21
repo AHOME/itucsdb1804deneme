@@ -8,14 +8,14 @@ class Book:
         self.publisher = publisher
 
 class Store:
-	def __init__(self, name, phone, address_id, email, website, opened_date, explanation):
-		self.name = name
-		self.phone = phone
-		self.address_id = address_id
-		self.email = email
+    def __init__(self, name, phone, address_id, email, website, opened_date, explanation):
+        self.name = name
+        self.phone = phone
+        self.address_id = address_id
+        self.email = email
         self.website = website
-		self.opened_date = opened_date
-		self.explanation = explanation
+        self.opened_date = opened_date
+        self.explanation = explanation
 
 class Comment:
     def __init__(self, customer_id, title, explanation, update_time, point_to_book):

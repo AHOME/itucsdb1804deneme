@@ -102,7 +102,7 @@ class Database:
             try:
                 connection = dbapi2.connect(self.url)
                 cursor = connection.cursor()
-                cursor.execute("SELECT * FROM STORES;")
+                cursor.execute("SELECT * FROM STORE;")
                 print(cursor)
                 for store in cursor:
                     print(store)

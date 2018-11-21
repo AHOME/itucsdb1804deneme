@@ -1,4 +1,4 @@
-from tables import Book
+from tables import Book, Store
 import psycopg2 as dbapi2
 import os
 import sys
@@ -104,7 +104,7 @@ class Database:
                 cursor = connection.cursor()
                 cursor.execute("SELECT * FROM STORES;")
                 for store in cursor:
-                    store_ = Book(store[1], store[2], store[3], store[4], store[5], store[6])
+                    store_ = Store(store[1], store[2], store[3], store[4], store[5], store[6])
                     stores.append((store[0], store_))
                 connection.commit()
                 cursor.close()

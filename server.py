@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from database import Database
-from tables import Book
+from tables import Book, Store
 import datetime
 
 app = Flask(__name__)

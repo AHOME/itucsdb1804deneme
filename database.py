@@ -26,10 +26,11 @@ class Database:
 
         def update_book(self, book_key, book):
             query = "UPDATE BOOK SET NAME = %s, WRITINGYEAR = %s, TYPE = %s, ISBN = %s, NUMBEROFPAGES = %s, PUBLISHER = %s WHERE (BOOK_ID = %s)"
+            fill = (book.name, book.date, book.type, book.isbn, book.numberOfPage, book.publisher, book_key)
+
             with dbapi2.connect(self.url) as connection:
                 cursor = connection.cursor()
-                cursor.execute(query,
-                    (book.name, book.date, book.type, book.isbn, book.numberOfPage, book.publisher, book_key))
+                cursor.execute(query, fill)
                 cursor.close()
 
         def delete_book(self, book_key):

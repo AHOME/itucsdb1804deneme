@@ -203,7 +203,7 @@ class Database:
                 cursor.execute(query)
                 for comment in cursor:
                     comment_ = Comment(comment[1], comment[2], comment[3], comment[4], comment[5])
-                    stores.append((comment[0], comment_))
+                    comments.append((comment[0], comment_))
                 cursor.close()
 
             return comments

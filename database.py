@@ -11,7 +11,7 @@ class Database:
             print("Usage: DATABASE_URL=url python database.py", file=sys.stderr)
             sys.exit(1)
         self.book = self.Book(url)
-        self.store = self.Store(url)
+        self.store = self.StoreDB(url)
 
     class Book:
         def __init__(self, url):
@@ -84,7 +84,7 @@ class Database:
 
             return books
         
-    class Store:
+    class StoreDB:
         def __init__(self, url):
             self.url = url
 
@@ -96,3 +96,22 @@ class Database:
                 cursor = connection.cursor()
                 cursor.execute(query, fill)
                 cursor.close()
+
+        def get(self):
+            stores = []
+            try:
+                connection = dbapi2.connect(self.url)
+                cursor = connection.cursor()
+                cursor.execute("SELECT * FROM STORES;")
+                for store in cursor:
+                    store_ = Book(store[1], store[2], store[3], store[4], store[5], store[6])
+                    stores.append((store[0], store_))
+                connection.commit()
+                cursor.close()
+            except (Exception, dbapi2.DatabaseError) as error:
+                print(error)
+            finally:
+                if connection is not None:
+                    connection.close()
+
+            return stores

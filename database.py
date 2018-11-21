@@ -25,7 +25,7 @@ class Database:
                 cursor.close()
 
         def update_book(self, book_key, book):
-            query = "UPDATE BOOK SET NAME = ?, WRITINGYEAR = ?, TYPE = ?, ISBN = ?, NUMBEROFPAGES = ?, PUBLISHER = ? WHERE (ID = ?)"
+            query = "UPDATE BOOK SET NAME = ?, WRITINGYEAR = ?, TYPE = ?, ISBN = ?, NUMBEROFPAGES = ?, PUBLISHER = ? WHERE (BOOK_ID = ?)"
             with dbapi2.connect(self.url) as connection:
                 cursor = connection.cursor()
                 cursor.execute(query,

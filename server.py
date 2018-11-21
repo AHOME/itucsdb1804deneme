@@ -11,6 +11,7 @@ bookdb.add_book(Book("Hayvan Çiftliği", 2018, "tür2", 9750719387, 152, "Can Y
 bookdb.add_book(Book("Simyacı", 2018, "tür1", 9750726439, 184, "Can Yayınları"))
 bookdb.add_book(Book("Göçüp Gidenler Koleksiyoncusu", 2018, "tür3", 6602026351, 168, "Doğan Kitap"))
 bookdb.add_book(Book("Osmanlı Gerçekleri", 2018, "tür2", 6050827644, 288, "Timaş Yayınları"))
+bookdb.update_book(5,Book("5Osmanlı Gerçekleri", 52018, "5tür2", 56050827644, 5288, "5Timaş Yayınları"))
 
 @app.route("/")
 def home_page():

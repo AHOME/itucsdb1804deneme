@@ -24,6 +24,14 @@ class Database:
                     (book.name, book.date, book.type, book.isbn, book.numberOfPage, book.publisher))
                 cursor.close()
 
+        def update_book(self, book_key, book):
+            query = "UPDATE BOOK SET NAME = ?, WRITINGYEAR = ?, TYPE = ?, ISBN = ?, NUMBEROFPAGES = ?, PUBLISHER = ? WHERE (ID = ?)"
+            with dbapi2.connect(self.url) as connection:
+                cursor = connection.cursor()
+                cursor.execute(query,
+                    (book.name, book.date, book.type, book.isbn, book.numberOfPage, book.publisher, book_key))
+                cursor.close()
+
         def delete_book(self, book_key):
             try:
                 connection = dbapi2.connect(self.url)

@@ -11,6 +11,7 @@ class Database:
             print("Usage: DATABASE_URL=url python database.py", file=sys.stderr)
             sys.exit(1)
         self.book = self.Book(url)
+        self.store = self.Store(url)
 
     class Book:
         def __init__(self, url):
@@ -82,3 +83,16 @@ class Database:
                     connection.close()
 
             return books
+        
+    class Store:
+        def __init__(self, url):
+            self.url = url
+
+        def add(self, store):
+            query = "INSERT INTO STORE (NAME, PHONE, ADRESS_ID, EMAIL, OPENEDDATE, EXPLANATION) VALUES (%s, %s, %s, %s, %s, %s)"    
+            fill = (store.name, store.phone, store.address_id, store.email, store.opened_date, store.explanation)
+            
+            with dbapi2.connect(self.url) as connection:
+                cursor = connection.cursor()
+                cursor.execute(query, fill)
+                cursor.close()

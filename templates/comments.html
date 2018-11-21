@@ -6,22 +6,20 @@
     <table class="table is-striped is-fullwidth">
         <tr>
         	<th>ID</th>
-        	<th>Name</th>
-        	<th>Phone</th>
-            <th>Adress ID</th>
-        	<th>E-Mail</th>
-        	<th>Opened Date</th>
-        	<th>Explanation</th>
+        	<th>Customer ID</th>
+        	<th>Title</th>
+            <th>Explanation</th>
+        	<th>Update Time</th>
+        	<th>Point to Book</th>
         </tr>
         {% for comment_key, comment in comments %}
         <tr>
             <td>{{ comment_key }}</td>
-            <td>{{ comment.name }}</td>
-            <td>{{ comment.phone }}</td>
-            <td>{{ comment.address_id }}</td>
-            <td>{{ comment.email }}</td>
-            <td>{{ comment.opened_date }}</td>
+            <td>{{ comment.customer_id }}</td>
+            <td>{{ comment.title }}</td>
             <td>{{ comment.explanation }}</td>
+            <td>{{ comment.update_time }}</td>
+            <td>{{ comment.point_to_book }}</td>
         </tr>
         {% endfor %}
     </table>

@@ -103,7 +103,9 @@ class Database:
                 connection = dbapi2.connect(self.url)
                 cursor = connection.cursor()
                 cursor.execute("SELECT * FROM STORES;")
+                print(cursor)
                 for store in cursor:
+                    print(store)
                     store_ = Store(store[1], store[2], store[3], store[4], store[5], store[6])
                     stores.append((store[0], store_))
                 connection.commit()

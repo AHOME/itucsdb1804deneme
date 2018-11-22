@@ -22,10 +22,15 @@ INIT_STATEMENTS = [
 
 def initialize(url):
     with dbapi2.connect(url) as connection:
-        cursor = connection.cursor()
-        for statement in INIT_STATEMENTS:
-            cursor.execute(statement)
-        cursor.close()
+        try:
+            cursor = connection.cursor()
+            for statement in INIT_STATEMENTS:
+                cursor.execute(statement)
+            cursor.close()
+        except dbapi2.DatabaseError:
+            connection.rollback()
+        finally:
+            connection.close()
 
 
 if __name__ == "__main__":

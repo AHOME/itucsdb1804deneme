@@ -29,8 +29,6 @@ def initialize(url):
             cursor.close()
         except dbapi2.DatabaseError:
             connection.rollback()
-        finally:
-            connection.close()
 
 
 if __name__ == "__main__":

@@ -37,5 +37,10 @@ def comments_page():
     comments = db.comment.get_table()
     return render_template("comments.html", comments=sorted(comments))
 
+@app.route("/customers")
+def customers_page():
+    customers = db.customer.get_table()
+    return render_template("customers.html", customers=sorted(customers))
+
 if __name__ == "__main__":
     app.run()

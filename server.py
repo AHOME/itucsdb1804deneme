@@ -6,8 +6,6 @@ import datetime
 app = Flask(__name__)
 
 db = Database()
-bookdb = db.book
-
 
 @app.route("/")
 def home_page():

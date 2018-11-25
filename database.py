@@ -47,7 +47,7 @@ class Database:
         def get_row(self, cust_id):
             _customer = None
 
-            query = "SELECT * FROM COMMENT WHERE CUSTOMER_ID = %s"
+            query = "SELECT * FROM CUSTOMER WHERE CUSTOMER_ID = %s"
             fill = (cust_id)
 
             with dbapi2.connect(self.url) as connection:

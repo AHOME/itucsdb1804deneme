@@ -4,7 +4,9 @@ from tables import *
 import datetime
 
 app = Flask(__name__)
-    
+
+db = Database()
+
 @app.route("/")
 def home_page():
     return render_template("home.html")

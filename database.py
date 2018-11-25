@@ -70,7 +70,6 @@ class Database:
 
             return _customer
 
-
         def get_table(self):
             customers = []
 

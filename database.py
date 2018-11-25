@@ -59,7 +59,7 @@ class Database:
 
             return _customer
 
-    def get_table(self):
+    	def get_table(self):
             customers = []
 
             query = "SELECT * FROM CUSTOMER;"

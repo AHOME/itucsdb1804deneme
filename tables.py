@@ -51,7 +51,7 @@ class Customer:
 
 
 class Address:
-    def __init__(self, address_id, address_name, country, city, district, neighborhood, avenue, street, number, zipcode, explanation):
+    def __init__(self, address_id, address_name, country, city, district, neighborhood, avenue, street, addr_number, zipcode, explanation):
         self.address_id = address_id
         self.address_name = address_name
         self.country = country
@@ -60,7 +60,7 @@ class Address:
         self.neighborhood = neighborhood
         self.avenue = avenue
         self.street = street
-        self.number = number
+        self.addr_number = addr_number
         self.zipcode = zipcode
         self.explanation = explanation
 

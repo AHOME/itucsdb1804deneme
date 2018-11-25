@@ -12,9 +12,9 @@
         	<th>Phone</th>
         	<th>Is_Active?</th>
         </tr>
-        {% for customer_key, customer in customers %}
+        {% for customer in customers %}
         <tr>
-            <td>{{ customer_key }}</td>
+            <td>{{ customer.customer_id }}</td>
             <td>{{ customer.person_id }}</td>
             <td>{{ customer.username }}</td>
             <td>{{ customer.email }}</td>

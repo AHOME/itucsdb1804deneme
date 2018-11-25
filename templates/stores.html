@@ -11,18 +11,18 @@
             <th>Adress ID</th>
             <th>E-Mail</th>
             <th>Website</th>
-        	<th>Opened Date</th>
+        	<th>Date Added</th>
         	<th>Explanation</th>
         </tr>
-        {% for store_key, store in stores %}
+        {% for store in stores %}
         <tr>
-            <td>{{ store_key }}</td>
-            <td>{{ store.name }}</td>
-            <td>{{ store.phone }}</td>
+            <td>{{ store.store_id }}</td>
+            <td>{{ store.store_name }}</td>
+            <td>{{ store.store_phone }}</td>
             <td>{{ store.address_id }}</td>
             <td>{{ store.email }}</td>
             <td>{{ store.website }}</td>
-            <td>{{ store.opened_date }}</td>
+            <td>{{ store.date_added }}</td>
             <td>{{ store.explanation }}</td>
         </tr>
         {% endfor %}

@@ -8,18 +8,20 @@
         	<th>ID</th>
         	<th>Customer ID</th>
         	<th>Title</th>
-            <th>Explanation</th>
+            <th>Statement</th>
+            <th>Added Time</th>
         	<th>Update Time</th>
-        	<th>Point to Book</th>
+        	<th>Book ID</th>
         </tr>
-        {% for comment_key, comment in comments %}
+        {% for comment in comments %}
         <tr>
-            <td>{{ comment_key }}</td>
+            <td>{{ comment.comment_id }}</td>
             <td>{{ comment.customer_id }}</td>
-            <td>{{ comment.title }}</td>
-            <td>{{ comment.explanation }}</td>
+            <td>{{ comment.comment_title }}</td>
+            <td>{{ comment.com_statement }}</td>
+            <td>{{ comment.added_time }}</td>
             <td>{{ comment.update_time }}</td>
-            <td>{{ comment.point_to_book }}</td>
+            <td>{{ comment.book_id }}</td>
         </tr>
         {% endfor %}
     </table>

@@ -11,6 +11,7 @@ class Database:
             print("Usage: DATABASE_URL=url python database.py", file=sys.stderr)
             sys.exit(1)
         self.book = self.Book(url)
+        self.book_edition = self.Book_Edition(url)
         self.store = self.Store(url)
         self.comment = self.Comment(url)
 

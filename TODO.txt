@@ -1,5 +1,5 @@
 // FORMAT -> TODO <Type> : <Person Initials> - <Description of task>
 
-TODO FIX : __ - Error that domain and tables already exist
 TODO FIX : __ - Why insert duplicate rows?
-TODO CREATE : my - Database operations for Comment tables
+TODO FIX : MY - Change original create table query with temp query after conditions 
+TODO ADD : MY - Aynı veriden varsa tabloya bir daha ekleme

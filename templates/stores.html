@@ -14,9 +14,9 @@
         	<th>Date Added</th>
         	<th>Explanation</th>
         </tr>
-        {% for store in stores %}
+        {% for store_id, store in stores %}
         <tr>
-            <td>{{ store.store_id }}</td>
+            <td>{{ store_id }}</td>
             <td>{{ store.store_name }}</td>
             <td>{{ store.store_phone }}</td>
             <td>{{ store.address_id }}</td>

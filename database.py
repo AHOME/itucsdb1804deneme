@@ -61,6 +61,8 @@ class Database:
 
         def get_row(self, book_key):
             _book = None
+            if type(book_key) == int:
+                book_key = str(book_key)
 
             query = "SELECT * FROM BOOK WHERE BOOK_ID = %s"
             fill = (book_key)

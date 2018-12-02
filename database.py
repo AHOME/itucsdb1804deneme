@@ -714,8 +714,8 @@ class Database:
                 cursor = connection.cursor()
                 cursor.execute(query)
                 for customer_address in cursor:
-                    customer_address_ = CustomerAddress(customer_addresses[0], customer_addresses[1])
-                    customer_addresses.append(customer_address_)
+                    customer_address_ = CustomerAddress(customer_address[0], customer_address[1])
+                    customer_address.append(customer_address_)
                 cursor.close()
 
             return customer_addresses

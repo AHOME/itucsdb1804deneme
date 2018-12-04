@@ -769,6 +769,24 @@ class Database:
 
             return _book_edition
 
+        def get_rows_by_book(self, book_id):
+            book_edition_table = []
+            if type(book_id) == int:
+                book_id = str(book_id)
+
+            query = "SELECT * FROM BOOK_EDITION WHERE (BOOK_ID = %s)"
+            fill = (book_id)
+
+            with dbapi2.connect(self.url) as connection:
+                cursor = connection.cursor()
+                cursor.execute(query, fill)
+                for book_edition in cursor:
+                    book_edition_ = BookEdition(book_edition[0], book_edition[1], book_edition[2], book_edition[3], book_edition[4], book_edition[5], book_edition[6])
+                    book_edition_table.append(book_edition_)
+                cursor.close()
+
+            return book_edition_table
+
         def get_table(self):
             book_edition_table = []
 
@@ -907,6 +925,43 @@ class Database:
                 cursor.close()
 
             return products
+
+        def get_products_all_info(self, store_id=None, book_id=None, edition_number=None, is_active=True):
+            products_editions_books_store = []
+
+            query = "SELECT * FROM PRODUCT, BOOK_EDITION, BOOK, STORE " \
+                    "WHERE ((PRODUCT.STORE_ID = STORE.STORE_ID " \
+                    "AND PRODUCT.BOOK_ID = BOOK.BOOK_ID AND BOOK.BOOK_ID = BOOK_EDITION.BOOK_ID " \
+                    "AND BOOK_EDITION.EDITION_NUMBER = PRODUCT.EDITION_NUMBER) " \
+                    "AND (PRODUCT.IS_ACTIVE = %s"
+            fill = [is_active]
+
+            if store_id:
+                query += " AND STORE_ID = %s"
+                fill.append(store_id)
+            if book_id:
+                query += " AND BOOK_ID = %s"
+                fill.append(book_id)
+            if book_id and edition_number:
+                query += " AND EDITION_NUMBER = %s"
+                fill.append(edition_number)
+            query += "))"
+
+            fill = tuple(fill)
+
+            with dbapi2.connect(self.url) as connection:
+                cursor = connection.cursor()
+                cursor.execute(query, fill)
+                for all_info in cursor:
+                    print(all_info)
+                    product_ = Product(all_info[0], all_info[1], all_info[2], all_info[3], all_info[4], all_info[5], all_info[6], all_info[7], all_info[8])
+                    book_editions_ = BookEdition(all_info[9], all_info[10], all_info[11], all_info[12], all_info[13], all_info[14], all_info[15])
+                    book_ = Book(all_info[17], all_info[18], all_info[19], book_id=all_info[16])
+                    store_ = Store(all_info[21], all_info[22], all_info[23], all_info[24], all_info[25], all_info[26], all_info[27], store_id=all_info[20])
+                    products_editions_books_store.append([product_, book_editions_, book_, store_])
+                cursor.close()
+
+            return products_editions_books_store
 
     # myilmaz
     class TransactionProduct:

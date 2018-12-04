@@ -23,9 +23,10 @@ def books_page():
 def book_page(book_key):
     db = current_app.config["db"]
     book = db.book.get_row(book_key)
+    editions = db.book_edition.get_rows_by_book(book_key)
     if book is None:
         abort(404)
-    return render_template("book.html", book=(book_key, book))
+    return render_template("book.html", book=book, book_key=book_key, editions=editions)
 
 
 def book_add_page():
@@ -109,3 +110,13 @@ def signup_page():
     db = current_app.config["db"]
     if request.method == "GET":
         return render_template("signup.html")
+
+
+def products_page():
+    db = current_app.config["db"]
+    if request.method == "GET":
+        tables = db.product.get_products_all_info()
+        return render_template("products.html", tables=tables)
+    else:
+        return redirect(url_for("products_page"))
+

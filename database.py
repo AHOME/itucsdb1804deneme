@@ -7,7 +7,8 @@ import sys
 
 def insertIntoFlex(table, arg_count, *columns):
     valStr = ("%s, "*(arg_count-1)) + "%s"
-    return "INSERT INTO {tab} VALUES ({fill})".format(tab=table, fill=valStr, *columns, )
+    columnStr = ("{}, "*(arg_count-1)) + "{}"
+    return ("INSERT INTO {tab} ("+columnStr+") VALUES ({fill})").format(tab=table, fill=valStr, *columns, )
 
 def deleteFlex(table, condition):
     return "DELETE FROM {tab} WHERE {cond} = %s".format(tab=table, cond=condition)

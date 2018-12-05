@@ -379,7 +379,7 @@ class Database:
             self.dbname = "ADDRESS"
 
         def add(self, address):
-            query = "INSERT INTO ADDRESS (ADDRESS_NAME, COUNTRY, CITY, DISTRICT, NEIGHBORHOOD, AVENUE, STREET, ADDR_NUMBER, ZIPCODE, EXPLANATION) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"    
+            query = "INSERT INTO ADDRESS (ADDRESS_NAME, COUNTRY, CITY, DISTRICT, NEIGHBORHOOD, AVENUE, STREET, ADDR_NUMBER, ZIPCODE, EXPLANATION) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
             fill = (address.address_name, address.country, address.city, address.district, address.neighborhood, address.avenue, address.street, address.addr_number, address.zipcode, address.explanation)
 
             with dbapi2.connect(url) as connection:
@@ -441,7 +441,7 @@ class Database:
             self.dbname = "AUTHOR"
 
         def add(self, author):
-            query = "INSERT INTO AUTHOR (PERSON_ID, BIOGRAPHY) VALUES (%s, %s)"    
+            query = "INSERT INTO AUTHOR (PERSON_ID, BIOGRAPHY) VALUES (%s, %s)"
             fill = (author.person_id, author.biography)
 
             with dbapi2.connect(url) as connection:
@@ -503,7 +503,7 @@ class Database:
             self.dbname = "BOOK_AUTHOR"
 
         def add(self, book_author):
-            query = "INSERT INTO BOOK_AUTHOR (BOOK_ID, AUTHOR_ID) VALUES (%s, %s)"    
+            query = "INSERT INTO BOOK_AUTHOR (BOOK_ID, AUTHOR_ID) VALUES (%s, %s)"
             fill = (book_author.book_id, book_author.author_id)
 
             with dbapi2.connect(url) as connection:
@@ -516,7 +516,7 @@ class Database:
             second_attr = "AUTHOR_ID" if update_book_id else "BOOK_ID"
             first_val = book_author.book_id if update_book_id else book_author.author_id
             second_val = book_author.author_id if update_book_id else book_author.book_id
-    
+
             query = "UPDATE BOOK_AUTHOR SET %s = %s WHERE (%s = %s)"
             fill = (first_attr, first_val, second_attr, second_val)
 

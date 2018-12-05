@@ -354,10 +354,10 @@ class Database:
             result = execute(query, fill)
             if result is not None:
                 result = result[0]
-            if column == "*":
-                result = Customer(*result, )
-            else:
-                result = result[0]
+                if column == "*":
+                    result = Customer(*result, )
+                else:
+                    result = result[0]
 
             return result
 
@@ -366,10 +366,11 @@ class Database:
 
             query = getTableFlex("CUSTOMER", column)
             result = execute(query)
-
-            for customer in result:
-                customer_ = Customer(*customer)
-                customers.append(customer_)
+            
+            if result is not None:
+                for customer in result:
+                    customer_ = Customer(*customer)
+                    customers.append(customer_)
 
             return customers
 

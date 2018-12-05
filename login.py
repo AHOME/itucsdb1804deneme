@@ -9,7 +9,6 @@ from tables import Person, Customer
 def check_password(username, pass_input):
     
     db = current_app.config["db"]
-    print(username, pass_input)
     pass_hash = db.customer.get_row("USERNAME", username, "PASS_HASH")
     if pass_hash != None:
         print(pass_hash)
@@ -34,8 +33,7 @@ def sign_up(username, password, email, name, surname, phone, dob, gender):
 
     new_person = Person(person_name=name, person_surname=surname, date_of_birth=dob, gender=gender)
     person_id = db.person.add(new_person)
-    new_customer = Customer(0, person_id, username, email, pass_hash, phone, True)
-    db.customer.add(new_customer)
+    db.customer.add(person_id, username, email, pass_hash, phone, True)
 
 
 def login(username, password):

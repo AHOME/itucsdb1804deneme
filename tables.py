@@ -6,20 +6,20 @@ class Book:
         self.explanation = explanation
 
 
-class Category:
+class CategoryObj:
     def __init__(self, category_id, category_name):
         self.category_id = category_id
         self.category_name = category_name
 
 
-class Book_Category:
+class Book_CategoryObj:
     def __init__(self, book_id, category_id):
         self.book_id = book_id
         self.category_id = category_id
 
 
 
-class Person:
+class PersonObj:
     def __init__(self, person_id=None, person_name="", person_surname="", gender="", date_of_birth=None, nationality=""):
         self.person_id = person_id
         self.person_name = person_name
@@ -29,7 +29,7 @@ class Person:
         self.nationality = nationality
 
 
-class Customer:
+class CustomerObj:
     def __init__(self, customer_id, person_id, username, email, password_hash, phone, is_active):
         self.customer_id = customer_id
         self.person_id = person_id
@@ -40,7 +40,7 @@ class Customer:
         self.is_active = is_active
 
 
-class Address:
+class AddressObj:
     def __init__(self, address_id, address_name, country, city, district, neighborhood, avenue, street, addr_number, zipcode, explanation):
         self.address_id = address_id
         self.address_name = address_name
@@ -55,14 +55,14 @@ class Address:
         self.explanation = explanation
 
 
-class Author:
+class AuthorObj:
     def __init__(self, author_id, person_id, biography):
         self.author_id = author_id
         self.person_id = person_id
         self.biography = biography
 
 
-class Book_Author:
+class Book_AuthorObj:
     def __init__(self, book_id, author_id):
         self.book_id = book_id
         self.author_id = author_id

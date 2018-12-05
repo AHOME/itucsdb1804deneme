@@ -1,8 +1,8 @@
 from flask import current_app, render_template, abort, request, redirect, url_for
 import datetime
 from tables import *
-from database import Control
-import login
+from table_operations.control import Control
+from login import login, sign_up
 
 
 def home_page():
@@ -182,7 +182,7 @@ def login_page():
         user_name = request.form["inputUsername"]
         user_password = request.form["inputPassword"]
 
-        if login.login(user_name, user_password):
+        if login(user_name, user_password):
             return redirect(url_for("home_page"))
         else:
             return redirect(url_for("login_page"))
@@ -201,5 +201,5 @@ def signup_page():
         user_DOB = request.form["inputDOB"]
         user_gender = request.form["inputGender"]
 
-        login.sign_up(user_username, user_password, user_email, user_name, user_surname, user_phone, user_DOB, user_gender)
+        sign_up(user_username, user_password, user_email, user_name, user_surname, user_phone, user_DOB, user_gender)
         return redirect(url_for("home_page"))

@@ -13,34 +13,38 @@ class baseClass:
             sys.exit(1)
 
 
-    def deleteGeneric(self, value, condition):
-        query = self.deleteFlex(condition)
-        fill = (value, )
+    def deleteGeneric(self, where_values, where_columns):
+        '''
+        @param values (list), conditions (list)
+        '''
+
+        query = self.deleteFlex(where_columns)
+        fill = (where_values, )
         self.execute(query, fill)
 
-    def updateGeneric(self, values, condition, *columns):
-        query = self.updateFlex(condition, len(values), *columns)
-        fill = (*values, )
+    def updateGeneric(self, new_values, update_columns, where_values, where_columns):
+        query = self.updateFlex(where_columns, update_columns)
+        fill = (*new_values, *where_values)
         self.execute(query, fill)
 
-    def getRowGeneric(self, condition, value, column):
-        query = self.getRowFlex(condition, column)
-        fill = (value, )
+    def getRowGeneric(self, where_columns, where_values, select_columns):
+        query = self.getRowFlex(where_columns, select_columns)
+        fill = (where_values, )
 
         result = self.execute(query, fill)
         if result is not None:
             result = result[0]
-            if column == "*":
+            if select_columns == "*":
                 result = self.cons(*result, )
             else:
                 result = result[0]
         return result
 
-    def getTableGeneric(self, condition=None, value=None, column=None):
+    def getTableGeneric(self, where_columns=None, where_values=None, select_columns=None):
         results_list = []
 
-        query = self.getTableFlex(condition, column)
-        fill = (value, ) if condition is not None else None
+        query = self.getTableFlex(where_columns, select_columns)
+        fill = (where_values, ) if where_columns is not None else None
 
         result = self.execute(query, fill)        
         if result is not None:
@@ -50,26 +54,34 @@ class baseClass:
         return results_list
 
 
-    def insertIntoFlex(self, *columns):
-        col_count = len(columns)
+
+    def whereFlex(self, *where_columns):
+        col_list = list(where_columns)
+        col_count = len(col_list)
+        return (" WHERE {} = %s" + (col_count-1)*(" AND {} = %s")).format(*where_columns, )
+
+    def insertIntoFlex(self, *insert_columns):
+        col_count = len(insert_columns)
         valStr = ("%s, "*(col_count-1)) + "%s"
         columnStr = ("{}, "*(col_count-1)) + "{}"
-        return ("INSERT INTO {tab} ("+columnStr+") VALUES ({fill})").format(tab=self.tablename, fill=valStr, *columns, )
+        return ("INSERT INTO {tab} ("+columnStr+") VALUES ({fill})").format(tab=self.tablename, fill=valStr, *insert_columns, )
 
-    def deleteFlex(self, condition):
-        return "DELETE FROM {tab} WHERE {cond} = %s".format(tab=self.tablename, cond=condition)
+    def deleteFlex(self, *where_columns):
+        return ("DELETE FROM {tab})"+self.whereFlex(where_columns)).format(tab=self.tablename, )
 
-    def updateFlex(self, condition, *columns):
+    def updateFlex(self, update_columns, where_columns):
         #columns shows the columns that will be updated
-        valStr = ("{} = %s, "*(len(columns)-1)) + "{} = %s "
-        return ("UPDATE {tab} SET "+valStr+"WHERE {cond} = %s").format(tab=self.tablename, cond=condition, *columns, )
+        valStr = ("{} = %s, "*(len(update_columns)-1) + "{} = %s ").format(*update_columns, )
+        return ("UPDATE {tab} SET ".format(tab=self.tablename, ))+valStr+self.whereFlex(where_columns)
 
-    def getRowFlex(self, condition, column="*"):
-        return "SELECT {col} FROM {tab} WHERE {cond} = %s".format(col=column, tab=self.tablename, cond=condition)
+    def getRowFlex(self, where_columns, select_columns="*"):
+        selectStr = ("SELECT {}"+(", {}"*(len(select_columns)-1))).format(*select_columns)
+        return selectStr+(" FROM {tab}").format(tab=self.tablename)+self.whereFlex(where_columns)
 
-    def getTableFlex(self, condition, column="*"):
-        filteringStr = " WHERE {cond} = %s".format(cond=condition, ) if condition is not None else ""
-        return ("SELECT {col} FROM {tab}".format(col=column, tab=self.tablename))+filteringStr
+    def getTableFlex(self, where_columns, select_columns="*"):
+        selectStr = ("SELECT {}"+(", {}"*(len(select_columns)-1))).format(*select_columns)
+        return selectStr+(" FROM {tab}".format(tab=self.tablename))+self.whereFlex(where_columns)
+
 
 
     def execute(self, query, fill=None):

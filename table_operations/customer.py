@@ -14,14 +14,14 @@ class Customer(baseClass):
         fill = (*values, )
         self.execute(query, fill)
 
-    def update(self, values, condition, *columns):
-        self.updateGeneric(values, condition, columns)
+    def update(self, new_values, update_columns, where_values, where_columns):
+        self.updateGeneric(new_values, update_columns, where_values, where_columns)
 
-    def delete(self, value, condition="CUSTOMER_ID"):
-        self.deleteGeneric(value, condition)
+    def delete(self, where_values, where_columns="CUSTOMER_ID"):
+        self.deleteGeneric(where_values, where_columns)
     
-    def get_row(self, condition, value, column="*"):
-        return self.getRowGeneric(condition, value, column)
+    def get_row(self, where_columns, where_values, select_columns="*"):
+        return self.getRowGeneric(where_columns, where_values, select_columns)
 
-    def get_table(self, condition=None, value=None, column="*"):
-        return self.getTableGeneric(condition, value, column)
+    def get_table(self, where_columns=None, where_values=None, select_columns="*"):
+        return self.getTableGeneric(where_columns, where_values, select_columns)

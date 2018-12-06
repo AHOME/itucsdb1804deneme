@@ -10,14 +10,14 @@ class Book_Author(baseClass):
         fill = (book_id, author_id)
         self.execute(query, fill)
 
-    def update(self, value, condition, column):
-        self.updateGeneric(value, condition, column)
+    def update(self, new_values, update_columns, where_values, where_columns):
+        self.updateGeneric(new_values, update_columns, where_values, where_columns)
 
-    def delete(self, value, condition):
-        self.deleteGeneric(value, condition)
+    def delete(self, where_values, where_columns):
+        self.deleteGeneric(where_values, where_columns)
     
-    def get_row(self, condition, value, column="*"):
-        return self.getRowGeneric(condition, value, column)
+    def get_row(self, where_columns, where_values, select_columns="*"):
+        return self.getRowGeneric(where_columns, where_values, select_columns)
 
-    def get_table(self, condition=None, value=None, column="*"):
-        return self.getTableGeneric(condition, value, column)
+    def get_table(self, where_columns=None, where_values=None, select_columns="*"):
+        return self.getTableGeneric(where_columns, where_values, select_columns)

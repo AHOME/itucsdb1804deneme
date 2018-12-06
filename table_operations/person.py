@@ -25,5 +25,5 @@ class Person(baseClass):
     def get_row(self, condition, value, column="*"):
         return self.getRowGeneric(condition, value, column)
 
-    def get_table(self, column="*"):
+    def get_table(self, condition=None, value=None, column="*"):
         return self.getTableGeneric(column)

@@ -36,12 +36,13 @@ class baseClass:
                 result = result[0]
         return result
 
-    def getTableGeneric(self, column):
+    def getTableGeneric(self, condition=None, value=None, column=None):
         results_list = []
 
-        query = self.getTableFlex(column)
-        result = self.execute(query)
-        
+        query = self.getTableFlex(condition, column)
+        fill = (value, ) if condition is not None else None
+
+        result = self.execute(query, fill)        
         if result is not None:
             for it in result:
                 results_list.append(self.cons(*it))
@@ -66,8 +67,9 @@ class baseClass:
     def getRowFlex(self, condition, column="*"):
         return "SELECT {col} FROM {tab} WHERE {cond} = %s".format(col=column, tab=self.tablename, cond=condition)
 
-    def getTableFlex(self, column="*"):
-        return "SELECT {col} FROM {tab}".format(col=column, tab=self.tablename)
+    def getTableFlex(self, condition, column="*"):
+        filteringStr = " WHERE {cond} = %s".format(cond=condition, ) if condition is not None else ""
+        return ("SELECT {col} FROM {tab}".format(col=column, tab=self.tablename))+filteringStr
 
 
     def execute(self, query, fill=None):

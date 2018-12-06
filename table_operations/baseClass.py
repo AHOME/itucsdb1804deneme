@@ -58,7 +58,7 @@ class baseClass:
     def whereFlex(self, *where_columns):
         col_list = list(where_columns)
         col_count = len(col_list)
-        return (" WHERE {} = %s" + (col_count-1)*(" AND {} = %s")).format(*where_columns, )
+        return (" WHERE {} = %s" + (col_count-1)*(" AND {} = %s")).format(*where_columns, ) if where_columns is not None else ""
 
     def insertIntoFlex(self, *insert_columns):
         col_count = len(insert_columns)

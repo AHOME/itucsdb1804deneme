@@ -4,7 +4,7 @@ import psycopg2 as dbapi2
 
 class Book(baseClass):
     def __init__(self):
-        super()
+        super().__init__("BOOK", BookObj)
 
     def add_book(self, book):
         query = "INSERT INTO BOOK (BOOK_NAME, RELEASE_YEAR, BOOK_EXPLANATION) VALUES (%s, %s, %s)"

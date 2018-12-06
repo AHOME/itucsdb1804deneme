@@ -23,6 +23,7 @@ def create_app():
 
     app.add_url_rule("/", view_func=views.home_page)
     app.add_url_rule("/login", view_func=views.login_page, methods=["GET", "POST"])
+    app.add_url_rule("/logout", view_func=views.logout_page)
     app.add_url_rule("/signup", view_func=views.signup_page, methods=["GET", "POST"])
     app.add_url_rule("/books", view_func=views.books_page, methods=["GET", "POST"])
     app.add_url_rule("/books/add-new", view_func=views.book_add_page, methods=["GET", "POST"])

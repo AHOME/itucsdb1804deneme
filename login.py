@@ -3,7 +3,6 @@ import psycopg2 as dbapi2
 import os
 import sys
 from flask import flash, current_app
-from tables import Person, Customer
 
 
 def check_password(username, pass_input):
@@ -24,15 +23,14 @@ def set_password(username, password):
     db.customer.update([pass_hash, username], "USERNAME", 1, "PASS_HASH")
 
 
-def sign_up(username, password, email, name, surname, phone, dob, gender):
+def sign_up(username, password, email, name, surname, phone, dob, gender, nationality="EMPTY"):
     pass_hash = hasher.hash(password)
     print(pass_hash)
     print(len(pass_hash))
 
     db = current_app.config["db"]
 
-    new_person = Person(person_name=name, person_surname=surname, date_of_birth=dob, gender=gender)
-    person_id = db.person.add(new_person)
+    person_id = db.person.add(name, surname, gender, dob, nationality)
     db.customer.add(person_id, username, email, pass_hash, phone, True)
 
 

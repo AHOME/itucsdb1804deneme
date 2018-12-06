@@ -186,7 +186,7 @@ def login_page():
         user = db.customer.get_row("USERNAME", username)
         if user is not None:
             password = form.data["password"]
-            if hasher.verify(password, user.pass_hash):
+            if hasher.verify(password, user.password_hash):
                 login_user(user)
                 flash("You have logged in successfully")
                 next_page = request.args.get("next", url_for("home_page"))

@@ -39,8 +39,7 @@ class CustomerObj(UserMixin):
         self.email = email
         self.password_hash = password_hash
         self.phone = phone
-        self.is_active = active
-        self.authenticated = authenticated
+        self.active = active
 
 
 class AddressObj:

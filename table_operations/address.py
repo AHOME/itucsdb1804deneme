@@ -9,6 +9,7 @@ class Address(baseClass):
         '''
         @params address_name, country, city, district, neighborhood, avenue, street, addr_number, zipcode, explanation
         '''
+        assert len(values) == 10
         query = self.insertIntoFlex("ADDRESS_NAME", "COUNTRY", "CITY", "DISTRICT", "NEIGHBORHOOD", "AVENUE", "STREET", "ADDR_NUMBER", "ZIPCODE", "EXPLANATION")
         fill = (*values, )
         self.execute(query, fill)

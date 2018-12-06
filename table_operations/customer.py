@@ -7,7 +7,7 @@ class Customer(baseClass):
 
     def add(self, *values):
         '''
-        @param person_id, username, email, password_hash, phone, is_active
+        @param person_id, username, email, password_hash, phone, active
         '''
         assert len(values) == 6
         query = self.insertIntoFlex("PERSON_ID", "USERNAME", "EMAIL", "PASS_HASH", "PHONE", "IS_ACTIVE")

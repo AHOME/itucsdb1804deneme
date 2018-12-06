@@ -19,7 +19,7 @@ class baseClass:
         '''
 
         query = self.deleteFlex(where_columns)
-        fill = (where_values, )
+        fill = (*where_values, )
         self.execute(query, fill)
 
     def updateGeneric(self, update_columns, new_values, where_columns, where_values):
@@ -28,23 +28,40 @@ class baseClass:
         self.execute(query, fill)
 
     def getRowGeneric(self, select_columns, where_columns=None, where_values=None):
+        if type(select_columns) is not list and select_columns is not None:
+            select_columns = select_columns.split()
+        if type(where_columns) is not list and where_columns is not None:
+            where_columns = where_columns.split()
+        if type(where_values) is not list and where_values is not None:
+            where_values = where_values.split()
+
         query = self.getRowFlex(select_columns, where_columns)
-        fill = (where_values, ) if where_columns is not None else None
+        fill = where_values if where_columns is not None else None
 
         result = self.execute(query, fill)
+
         if result is not None:
             result = result[0]
-            if select_columns == "*":
-                result = self.cons(*result, )
+            if select_columns == ["*"]:
+                result = self.cons(*result)
             else:
                 result = result[0]
+        print(result)
         return result
 
     def getTableGeneric(self, select_columns, where_columns=None, where_values=None):
+        if type(select_columns) is not list and select_columns is not None:
+            select_columns = select_columns.split()
+        if type(where_columns) is not list and where_columns is not None:
+            where_columns = where_columns.split()
+        if type(where_values) is not list and where_values is not None:
+            where_values = where_values.split()
+
         results_list = []
 
         query = self.getTableFlex(select_columns, where_columns)
-        fill = (where_values, ) if where_columns is not None else None
+        fill = (*where_values, ) if where_columns is not None else None
+        print("getTable: ", fill)
 
         result = self.execute(query, fill)        
         if result is not None:
@@ -57,8 +74,7 @@ class baseClass:
 
     def whereFlex(self, where_columns):
         if where_columns is None: return ""
-        col_list = list(where_columns)
-        col_count = len(col_list)
+        col_count = len(where_columns)
         return (" WHERE {} = %s" + (col_count-1)*(" AND {} = %s")).format(*where_columns, )
 
     def insertIntoFlex(self, *insert_columns):

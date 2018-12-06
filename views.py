@@ -182,7 +182,7 @@ def login_page():
     if form.validate_on_submit():
         username = form.data["username"]
         db = current_app.config["db"]
-        user = db.customer.get_row("USERNAME", username)
+        user = db.customer.get_row("*", "USERNAME", username)
         if user is not None:
             password = form.data["password"]
             if hasher.verify(password, user.password_hash):

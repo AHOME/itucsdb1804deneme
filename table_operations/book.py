@@ -50,11 +50,11 @@ class Book(baseClass):
             cursor.execute(query, fill)
             book = cursor.fetchone()
             if book is not None:
-                _book = BookObj(book[1], book[2], book[3])
+                _book = BookObj(book[1], book[2], book[3], book_id=book[0])
 
         return _book
 
-    def get_table(self):
+    def get_table(self, with_author=False):
         books = []
 
         query = "SELECT * FROM BOOK;"
@@ -64,7 +64,10 @@ class Book(baseClass):
             cursor.execute(query)
             for book in cursor:
                 book_ = BookObj(book[1], book[2], book[3], book_id=book[0])
-                books.append((book[0], book_))
+                if with_author:
+                    books.append((book_, ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]))
+                else:
+                    books.append(book_)
             cursor.close()
 
         return books

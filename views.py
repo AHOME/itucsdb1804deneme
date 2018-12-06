@@ -15,8 +15,8 @@ def home_page():
 def books_page():
     db = current_app.config["db"]
     if request.method == "GET":
-        books = db.book.get_table()
-        return render_template("books.html", books=sorted(books))
+        books = db.book.get_table(with_author=True)
+        return render_template("books.html", books=books)
     else:
         form_book_keys = request.form.getlist("book_keys")
         for form_book_key in form_book_keys:
@@ -28,10 +28,11 @@ def books_page():
 def book_page(book_key):
     db = current_app.config["db"]
     book = db.book.get_row(book_key)
+    authors = ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]
     editions = db.book_edition.get_rows_by_book(book_key)
     if book is None:
         abort(404)
-    return render_template("book.html", book=book, book_key=book_key, editions=editions)
+    return render_template("book.html", book=book, authors=authors, editions=editions)
 
 
 def book_add_page():
@@ -136,8 +137,6 @@ def book_edition_add_page():
     books = db.book.get_table()
     if request.method == "GET":
         values = {"book_id": "", "edition_number": "", "isbn": "", "publisher": "", "publish_year": "", "number_of_pages": "", "language": ""}
-        for j, i in books:
-            print(i.book_name, i.book_id)
         return render_template("forms/book_edition_edit.html", values=values, title="Book Edition Adding", books=books, err_message=err_message)
     else:
         values = {'book_id': request.form["book_id"], 'edition_number': request.form["edition_number"], 'isbn': request.form["isbn"], 'publisher': request.form["publisher"], 'publish_year': request.form["publish_year"], 'number_of_pages': request.form["number_of_pages"], 'language': request.form["language"]}

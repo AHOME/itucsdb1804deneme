@@ -12,7 +12,7 @@
     <div class="form-group">
       <label for="book_id">Book ID</label>
       <select class="form-control" id="book_id" name="book_id" required="required">
-        {% for key, book in books %}
+        {% for book in books %}
         {% if book.book_id == values['book_id'] %}
         <option value="{{ book.book_id }}" selected>{{ book.book_name }}</option>
         {% else %}

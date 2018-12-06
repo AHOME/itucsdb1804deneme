@@ -7,15 +7,19 @@
       <h2 class="title">{{ book.book_name }}</h2>
       <table>
         <tr>
-          <td><b>Name:</b></td>
+          <td><b>Name: </b></td>
           <td>{{ book.book_name }}</td>
         </tr>
         <tr>
-          <td><b>Release Year:</b></td>
+          <td><b>Authors: </b></td>
+          <td>{{ (', ').join(authors) }}</td>
+        </tr>
+        <tr>
+          <td><b>Release Year: </b></td>
           <td>{{ book.release_year }}</td>
         </tr>
         <tr>
-          <td><b>Explanation:</b></td>
+          <td><b>Explanation: </b></td>
           <td>{{ book.explanation }}</td>
         </tr>
       </table>

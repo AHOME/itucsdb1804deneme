@@ -4,7 +4,7 @@ import psycopg2 as dbapi2
 
 class Comment(baseClass):
     def __init__(self):
-        super()
+        super().__init__("COMMENT", CommentObj)
 
     def add(self, comment):
         query = "INSERT INTO COMMENT (CUSTOMER_ID, BOOK_ID, COMMENT_TITLE, COMMENT_STATEMENT, ADDED_TIME, UPDATED_TIME, RATING) VALUES (%s, %s, %s, %s, %s, %s, %s)"

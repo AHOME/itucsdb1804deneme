@@ -4,7 +4,7 @@ import psycopg2 as dbapi2
 
 class Transaction(baseClass):
     def __init__(self):
-        super()
+        super().__init__("TRANSACTION", TransactionObj)
 
     def add(self, transaction):
         query = "INSERT INTO TRANSACTION (CUSTOMER_ID, ADDRESS_ID, TRANSACTION_TIME, PAYMENT_TYPE, TRANSACTION_EXPLANATION) VALUES (%s, %s, %s, %s, %s)"

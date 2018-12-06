@@ -4,7 +4,7 @@ import psycopg2 as dbapi2
 
 class Store(baseClass):
     def __init__(self):
-        super()
+        super().__init__("STORE", StoreObj)
 
     def add(self, store):
         query = "INSERT INTO STORE (STORE_NAME, STORE_PHONE, ADDRESS_ID, STORE_EMAIL, WEBSITE, STORE_DATE_ADDED, STORE_EXPLANATION) VALUES (%s, %s, %s, %s, %s, %s, %s)"

@@ -33,7 +33,7 @@ class PersonObj:
 
 class CustomerObj(UserMixin):
     def __init__(self, customer_id, person_id, username, email, password_hash, phone, active=True, authenticated=False):
-        self.customer_id = customer_id
+        self.id = customer_id
         self.person_id = person_id
         self.username = username
         self.email = email

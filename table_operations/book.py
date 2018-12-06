@@ -2,6 +2,7 @@ from table_operations.baseClass import baseClass
 from tables import BookObj
 import psycopg2 as dbapi2
 
+
 class Book(baseClass):
     def __init__(self):
         super().__init__("BOOK", BookObj)
@@ -15,10 +16,9 @@ class Book(baseClass):
             cursor.execute(query, fill)
             cursor.close()
 
-    def update(self, book_key, book):
+    def update(self, book):
         query = "UPDATE BOOK SET BOOK_NAME = %s, RELEASE_YEAR = %s, BOOK_EXPLANATION = %s WHERE BOOK_ID = %s"
-        # TODO book_key or book.book_id
-        fill = (book.book_name, book.release_year, book.explanation, book_key)
+        fill = (book.book_name, book.release_year, book.explanation, book.book_id)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
@@ -65,7 +65,7 @@ class Book(baseClass):
             for book in cursor:
                 book_ = BookObj(book[1], book[2], book[3], book_id=book[0])
                 if with_author:
-                    books.append((book_, ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]))
+                    books.append((book_, ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]))  # TODO Kitabın bütün yazarlarını alma fonksiyonu
                 else:
                     books.append(book_)
             cursor.close()

@@ -7,17 +7,17 @@ class Comment(baseClass):
         super().__init__("COMMENT", CommentObj)
 
     def add(self, comment):
-        query = "INSERT INTO COMMENT (CUSTOMER_ID, BOOK_ID, COMMENT_TITLE, COMMENT_STATEMENT, ADDED_TIME, UPDATED_TIME, RATING) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.added_time, comment.updated_time, comment.rating)
+        query = "INSERT INTO COMMENT (CUSTOMER_ID, BOOK_ID, COMMENT_TITLE, COMMENT_STATEMENT, RATING) VALUES (%s, %s, %s, %s, %s)"
+        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.rating)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
 
-    def update(self, comment_key, comment):
-        query = "UPDATE COMMENT SET CUSTOMER_ID = %s, BOOK_ID = %s, COMMENT_TITLE = %s, COMMENT_STATEMENT = %s, ADDED_TIME = %s, UPDATED_TIME = %s, RATING = %s WHERE COMMENT_ID = %s"
-        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.added_time, comment.updated_time, comment.rating, comment_key)
+    def update(self, comment):
+        query = "UPDATE COMMENT SET CUSTOMER_ID = %s, BOOK_ID = %s, COMMENT_TITLE = %s, COMMENT_STATEMENT = %s, UPDATED_TIME = CURRENT_TIMESTAMP, RATING = %s WHERE COMMENT_ID = %s"
+        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.rating, comment.comment_id)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
@@ -44,7 +44,7 @@ class Comment(baseClass):
             cursor.execute(query, fill)
             comment = cursor.fetchone()
             if comment is not None:
-                _comment = CommentObj(comment[1], comment[2], comment[3], comment[4], comment[5], comment[6], comment[7])
+                _comment = CommentObj(comment[1], comment[2], comment[3], comment[4], comment[7], added_time=comment[5], updated_time=comment[6], comment_id=comment[0])
 
         return _comment
 
@@ -57,8 +57,8 @@ class Comment(baseClass):
             cursor = connection.cursor()
             cursor.execute(query)
             for comment in cursor:
-                comment_ = CommentObj(comment[1], comment[2], comment[3], comment[4], comment[5], comment[6], comment[7])
-                comments.append((comment[0], comment_))
+                comment_ = CommentObj(comment[1], comment[2], comment[3], comment[4], comment[7], added_time=comment[5], updated_time=comment[6], comment_id=comment[0])
+                comments.append(comment_)
             cursor.close()
 
         return comments

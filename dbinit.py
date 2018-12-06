@@ -103,7 +103,7 @@ INIT_STATEMENTS = [
         IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'rate_type') THEN
             CREATE DOMAIN RATE_TYPE AS SMALLINT
             CHECK (
-                (VALUE >= 0) AND (VALUE <= 5)
+                (VALUE > 0) AND (VALUE <= 5)
             );
         END IF;
     END$$;""",
@@ -116,7 +116,7 @@ INIT_STATEMENTS = [
         COMMENT_TITLE     VARCHAR(50) NOT NULL,
         COMMENT_STATEMENT VARCHAR(500) NOT NULL,
         ADDED_TIME        TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        UPDATED_TIME      TIMESTAMP DEFAULT NULL,
+        UPDATED_TIME      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         RATING            RATE_TYPE
     )""",
 

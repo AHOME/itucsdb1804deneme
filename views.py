@@ -5,7 +5,7 @@ from table_operations.control import Control
 from login import check_password, sign_up
 from forms import LoginForm
 from passlib.hash import pbkdf2_sha256 as hasher
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 
 def home_page():
@@ -27,12 +27,38 @@ def books_page():
 
 def book_page(book_key):
     db = current_app.config["db"]
+
+    # Take book information
     book = db.book.get_row(book_key)
-    authors = ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]
-    editions = db.book_edition.get_rows_by_book(book_key)
+    # If there is no book with this book_key, abort 404 page
     if book is None:
         abort(404)
-    return render_template("book.html", book=book, authors=authors, editions=editions)
+
+    # Take editions, authors, and comments of this book
+    editions = db.book_edition.get_rows_by_book(book_key)
+    authors = ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]  # TODO Kitabın bütün yazarlarını alma fonksiyonu
+    comments = db.comment.get_table()  # TODO !!!Kitabın!!! bütün yorumlarını alma fonksiyonu
+
+    # If the book page is displayed
+    if request.method == "GET":
+        # Blank comment form
+        new_comment_values = {"customer_id": "", "book_id": "", "comment_title": "", "comment_statement": "", "rating": ""}
+        return render_template("book.html", book=book, authors=authors, editions=editions, comments=comments, new_comment_values=new_comment_values)
+    # If the new comment is added
+    else:
+        # Take values from add_comment form
+        # TODO take customer_id from login system
+        new_comment_values = {"customer_id": 1, "book_id": book_key, "comment_title": request.form["comment_title"], "comment_statement": request.form["comment_statement"], "rating": request.form["rating"]}
+
+        comment_err_message = Control().Input().comment(new_comment_values)
+        if comment_err_message:
+            return render_template("book.html", book=book, authors=authors, editions=editions, comments=comments, comment_err_message=comment_err_message, new_comment_values=new_comment_values)
+
+        # Add comment to database
+        comment = CommentObj(new_comment_values["customer_id"], new_comment_values["book_id"], new_comment_values["comment_title"], new_comment_values["comment_statement"], new_comment_values["rating"])
+        db.comment.add(comment)
+
+        return redirect(url_for("book_page", book_key=book_key))
 
 
 def book_add_page():
@@ -93,7 +119,7 @@ def stores_page():
 def comments_page():
     db = current_app.config["db"]
     comments = db.comment.get_table()
-    return render_template("comments.html", comments=sorted(comments))
+    return render_template("comments.html", comments=comments)
 
 
 def customers_page():

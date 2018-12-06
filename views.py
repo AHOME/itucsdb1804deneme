@@ -120,7 +120,10 @@ def book_edit_page(book_key):
             return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message)
 
         book = BookObj(values["book_name"], values["released_year"], values["explanation"])
-        db.book.add_book(book)
+        book_id = db.book.update(book)
+        db.book_author.delete(where_columns="BOOK_ID", where_values=book_id)
+        for author_id in values["selected_author_ids"]:
+            db.book_author.add(book_id, author_id)
         return redirect(url_for("book_page", book_key=book_key))
 
 

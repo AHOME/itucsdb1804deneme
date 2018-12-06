@@ -24,4 +24,4 @@ class Customer(baseClass):
         return self.getRowGeneric(condition, value, column)
 
     def get_table(self, condition=None, value=None, column="*"):
-        return self.getTableGeneric(column)
+        return self.getTableGeneric(condition, value, column)

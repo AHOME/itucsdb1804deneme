@@ -38,7 +38,7 @@ class baseClass:
         query = self.getRowFlex(select_columns, where_columns)
         fill = where_values if where_columns is not None else None
 
-        result = self.execute(query, fill)
+        result = self.execute(query, fill, True)
 
         if result is not None:
             result = result[0]
@@ -61,9 +61,8 @@ class baseClass:
 
         query = self.getTableFlex(select_columns, where_columns)
         fill = (*where_values, ) if where_columns is not None else None
-        print("getTable: ", fill)
 
-        result = self.execute(query, fill)        
+        result = self.execute(query, fill, True)        
         if result is not None:
             for it in result:
                 results_list.append(self.cons(*it))
@@ -101,7 +100,7 @@ class baseClass:
 
 
 
-    def execute(self, query, fill=None):
+    def execute(self, query, fill=None, fetch_bool=False):
         result = []
         with dbapi2.connect(self.url) as connection:
             with connection.cursor() as curs:

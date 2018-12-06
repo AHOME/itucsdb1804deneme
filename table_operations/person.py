@@ -12,7 +12,7 @@ class Person(baseClass):
         assert len(values) == 5
         query = self.insertIntoFlex("PERSON_NAME", "SURNAME", "GENDER", "DATE_OF_BIRTH", "NATIONALITY") + " RETURNING PERSON_ID"
         fill = (*values, )
-        last_id = (self.execute(query, fill))[0][0]
+        last_id = (self.execute(query, fill, True))[0][0]
         return last_id if last_id != None else -1
 
 

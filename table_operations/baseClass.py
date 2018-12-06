@@ -46,7 +46,6 @@ class baseClass:
                 result = self.cons(*result)
             else:
                 result = result[0]
-        print(result)
         return result
 
     def getTableGeneric(self, select_columns, where_columns=None, where_values=None):
@@ -107,7 +106,8 @@ class baseClass:
                 try:
                     print(curs.mogrify(query, fill))
                     curs.execute(query, fill)
-                    result = curs.fetchall()
+                    if fetch_bool:
+                        result = curs.fetchall()
                 except dbapi2.Error as err:
                     print("Error: %s", err)
         

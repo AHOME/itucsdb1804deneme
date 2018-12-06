@@ -1,4 +1,6 @@
 from table_operations.baseClass import baseClass
+from tables import CustomerAddressObj
+import psycopg2 as dbapi2
 
 class CustomerAddress(baseClass):
     def __init__(self):
@@ -8,7 +10,7 @@ class CustomerAddress(baseClass):
         query = "INSERT INTO CUSTOMER_ADDRESS (CUSTOMER_ID, ADDRESS_ID) VALUES (%s, %s)"
         fill = (customer_address.customer_id, customer_address.address_id)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -18,7 +20,7 @@ class CustomerAddress(baseClass):
         query = "UPDATE CUSTOMER_ADDRESS SET ADDRESS_ID = %s ((CUSTOMER_ID = %s) AND (ADDRESS_ID = %s))"
         fill = (updated_customer_address.address_id, old_customer_address.customer_id, old_customer_address.address_id)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -28,7 +30,7 @@ class CustomerAddress(baseClass):
         query = "DELETE FROM CUSTOMER_ADDRESS WHERE ((CUSTOMER_ID = %s) AND (ADDRESS_ID = %s))"
         fill = (customer_address.customer_id, customer_address.address_id)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -41,7 +43,7 @@ class CustomerAddress(baseClass):
         query = "SELECT * FROM CUSTOMER_ADDRESS WHERE (CUSTOMER_ID = %s)"
         fill = (customer_id)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             for customer_address in cursor:
@@ -54,11 +56,11 @@ class CustomerAddress(baseClass):
 
         query = "SELECT * FROM CUSTOMER_ADDRESS;"
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query)
             for customer_address in cursor:
-                customer_address_ = CustomerAddress(customer_address[0], customer_address[1])
+                customer_address_ = CustomerAddressObj(customer_address[0], customer_address[1])
                 customer_address.append(customer_address_)
             cursor.close()
 

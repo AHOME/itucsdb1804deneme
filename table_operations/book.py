@@ -1,4 +1,6 @@
 from table_operations.baseClass import baseClass
+from tables import BookObj
+import psycopg2 as dbapi2
 
 class Book(baseClass):
     def __init__(self):
@@ -8,7 +10,7 @@ class Book(baseClass):
         query = "INSERT INTO BOOK (BOOK_NAME, RELEASE_YEAR, BOOK_EXPLANATION) VALUES (%s, %s, %s)"
         fill = (book.book_name, book.release_year, book.explanation)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -18,7 +20,7 @@ class Book(baseClass):
         # TODO book_key or book.book_id
         fill = (book.book_name, book.release_year, book.explanation, book_key)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -30,7 +32,7 @@ class Book(baseClass):
         query = "DELETE FROM BOOK WHERE BOOK_ID = %s"
         fill = (book_key)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             cursor.close()
@@ -43,12 +45,12 @@ class Book(baseClass):
         query = "SELECT * FROM BOOK WHERE BOOK_ID = %s"
         fill = (book_key)
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query, fill)
             book = cursor.fetchone()
             if book is not None:
-                _book = Book(book[1], book[2], book[3])
+                _book = BookObj(book[1], book[2], book[3])
 
         return _book
 
@@ -57,11 +59,11 @@ class Book(baseClass):
 
         query = "SELECT * FROM BOOK;"
 
-        with dbapi2.connect(url) as connection:
+        with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
             cursor.execute(query)
             for book in cursor:
-                book_ = Book(book[1], book[2], book[3], book_id=book[0])
+                book_ = BookObj(book[1], book[2], book[3], book_id=book[0])
                 books.append((book[0], book_))
             cursor.close()
 

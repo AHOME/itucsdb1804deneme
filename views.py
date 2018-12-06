@@ -1,8 +1,11 @@
-from flask import current_app, render_template, abort, request, redirect, url_for
+from flask import current_app, render_template, abort, request, redirect, url_for, session, flash
 import datetime
 from tables import *
 from table_operations.control import Control
-from login import login, sign_up
+from login import check_password, sign_up
+from forms import LoginForm
+from passlib.hash import pbkdf2_sha256 as hasher
+from flask_login import login_user, logout_user, login_required
 
 
 def home_page():
@@ -45,7 +48,7 @@ def book_add_page():
         if err_message:
             return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message)
 
-        book = Book(values["book_name"], values["released_year"], values["explanation"])
+        book = BookObj(values["book_name"], values["released_year"], values["explanation"])
         db.book.add_book(book)
         return redirect(url_for("books_page"))
 
@@ -69,7 +72,7 @@ def book_edit_page(book_key):
         if err_message:
             return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message)
 
-        book = Book(values["book_name"], values["released_year"], values["explanation"])
+        book = BookObj(values["book_name"], values["released_year"], values["explanation"])
         db.book.add_book(book)
         return redirect(url_for("book_page", book_key=book_key))
 
@@ -142,7 +145,7 @@ def book_edition_add_page():
         if err_message:
             return render_template("forms/book_edition_edit.html", values=values, title="Book Edition Adding", books=books, err_message=err_message)
 
-        book_edition = BookEdition(values["book_id"], values["edition_number"], values["isbn"], values["publisher"], values["publish_year"], values["number_of_pages"], values["language"])
+        book_edition = BookEditionObj(values["book_id"], values["edition_number"], values["isbn"], values["publisher"], values["publish_year"], values["number_of_pages"], values["language"])
         book_id, edition_number = db.book_edition.add(book_edition)
         return redirect(url_for("book_edition_page", book_id=book_id, edition_number=edition_number))
 
@@ -164,7 +167,7 @@ def book_edition_edit_page(book_id, edition_number):
         if err_message:
             return render_template("forms/book_edition_edit.html", values=values, title="Book Edition Adding", books=books, err_message=err_message)
 
-        book_edition = BookEdition(values["book_id"], values["edition_number"], values["isbn"], values["publisher"], values["publish_year"], values["number_of_pages"], values["language"])
+        book_edition = BookEditionObj(values["book_id"], values["edition_number"], values["isbn"], values["publisher"], values["publish_year"], values["number_of_pages"], values["language"])
         book_id, edition_number = db.book_edition.update(book_id, edition_number, book_edition)
         return redirect(url_for("book_edition_page", book_id=book_id, edition_number=edition_number))
 
@@ -176,16 +179,27 @@ def book_edition_delete_page(book_id, edition_number):
 
 
 def login_page():
-    if request.method == "GET":
-        return render_template("login.html")
-    else:
-        user_name = request.form["inputUsername"]
-        user_password = request.form["inputPassword"]
+    form = LoginForm()
+    if form.validate_on_submit():
+        username = form.data["username"]
+        db = current_app.config["db"]
+        user = db.customer.get_row("USERNAME", username)
+        if user is not None:
+            password = form.data["password"]
+            if hasher.verify(password, user.pass_hash):
+                login_user(user)
+                flash("You have logged in successfully")
+                next_page = request.args.get("next", url_for("home_page"))
+                return redirect(next_page)
 
-        if login(user_name, user_password):
-            return redirect(url_for("home_page"))
-        else:
-            return redirect(url_for("login_page"))
+        flash("Invalid credentials.")
+    return render_template("login.html", form=form)
+
+
+def logout_page():
+    logout_user()
+    flash("You have logged out.")
+    return redirect(url_for("home_page"))
 
 
 def signup_page():

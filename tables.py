@@ -1,4 +1,6 @@
-class Book:
+from flask_login import UserMixin
+
+class BookObj:
     def __init__(self, book_name, release_year, explanation, book_id=None):
         self.book_id = book_id
         self.book_name = book_name
@@ -29,15 +31,16 @@ class PersonObj:
         self.nationality = nationality
 
 
-class CustomerObj:
-    def __init__(self, customer_id, person_id, username, email, password_hash, phone, is_active):
+class CustomerObj(UserMixin):
+    def __init__(self, customer_id, person_id, username, email, password_hash, phone, active=True, authenticated=False):
         self.customer_id = customer_id
         self.person_id = person_id
         self.username = username
         self.email = email
         self.password_hash = password_hash
         self.phone = phone
-        self.is_active = is_active
+        self.is_active = active
+        self.authenticated = authenticated
 
 
 class AddressObj:
@@ -68,7 +71,7 @@ class Book_AuthorObj:
         self.author_id = author_id
 
 
-class Store:
+class StoreObj:
     def __init__(self, store_name, store_phone, address_id, email, website, date_added, explanation, store_id=None):
         self.store_id = store_id
         self.store_name = store_name
@@ -81,7 +84,7 @@ class Store:
 
 
 # myilmaz
-class Comment:
+class CommentObj:
     def __init__(self, customer_id, book_id, comment_title, comment_statement, added_time, updated_time, rating):
         self.customer_id = customer_id
         self.book_id = book_id
@@ -93,14 +96,14 @@ class Comment:
 
 
 # myilmaz
-class CustomerAddress:
+class CustomerAddressObj:
     def __init__(self, customer_id, address_id):
         self.customer_id = customer_id
         self.address_id = address_id
 
 
 # myilmaz
-class BookEdition:
+class BookEditionObj:
     def __init__(self, book_id, edition_number, isbn, publisher, publish_year, number_of_pages, language):
         self.book_id = book_id
         self.edition_number = edition_number
@@ -112,7 +115,7 @@ class BookEdition:
 
 
 # myilmaz
-class Transaction:
+class TransactionObj:
     def __init__(self, customer_id, address_id, transaction_time, payment_type, explanation):
         self.customer_id = customer_id
         self.address_id = address_id
@@ -122,7 +125,7 @@ class Transaction:
 
 
 # myilmaz
-class Product:
+class ProductObj:
     def __init__(self, store_id, book_id, edition_number, remaining, actual_price, number_of_sells, date_added, explanation, is_active):
         self.store_id = store_id
         self.book_id = book_id
@@ -136,7 +139,7 @@ class Product:
 
 
 # myilmaz
-class TransactionProduct:
+class TransactionProductObj:
     def __init__(self, transaction_id, store_id, book_id, edition_number, piece, unit_price):
         self.transaction_id = transaction_id
         self.store_id = store_id

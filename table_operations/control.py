@@ -27,7 +27,7 @@ class Control:
                 err_message = "Edition number cannot be less than 1"
             elif not values['edition_number'].isdigit():
                 err_message = "Edition number must be digit"
-            elif not edition_number and Database().book_edition.get_row(values['book_id'], values['edition_number']):
+            elif not edition_number and db.book_edition.get_row(values['book_id'], values['edition_number']):
                 err_message = "There is this edition number"
             elif edition_number and edition_number != int(values['edition_number']):
                 err_message = "This is editing page. Edition number cannot be change"

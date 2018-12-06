@@ -16,6 +16,8 @@ class Book(baseClass):
             cursor.execute(query, fill)
             cursor.close()
 
+        return self.get_table()[-1].book_id
+
     def update(self, book):
         query = "UPDATE BOOK SET BOOK_NAME = %s, RELEASE_YEAR = %s, BOOK_EXPLANATION = %s WHERE BOOK_ID = %s"
         fill = (book.book_name, book.release_year, book.explanation, book.book_id)

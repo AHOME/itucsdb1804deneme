@@ -37,7 +37,7 @@ def book_page(book_key):
     # Take editions, authors, and comments of this book
     editions = db.book_edition.get_rows_by_book(book_key)
     author_names = []  # TODO Kitabın bütün yazarlarını alma fonksiyonu
-    for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=str(book_key)):
+    for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=book_key):
         for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
             for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
                 author_names.append(person.person_name + " " + person.person_surname)
@@ -68,19 +68,27 @@ def book_page(book_key):
 def book_add_page():
     db = current_app.config["db"]
     err_message = None
+    # TODO Control - Get authors because of selecting book's authors
+    authors = []
+    for author in db.author.get_table():
+        authors.append((author, db.person.get_row(where_columns="PERSON_ID", where_values=author.person_id)))
+
     if request.method == "GET":
-        values = {"book_name": "", "released_year": "", "explanation": ""}
-        return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message)
+        values = {"book_name": "", "released_year": "", "explanation": "", "authors": ""}
+        return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message, authors=authors)
     else:
-        values = {"book_name": request.form["book_name"], "released_year": request.form["released_year"], "explanation": request.form["explanation"]}
+        values = {"book_name": request.form["book_name"], "released_year": request.form["released_year"], "explanation": request.form["explanation"], "authors": request.form["authors"]}
 
         # Invalid input control
         err_message = Control().Input().book(values)
         if err_message:
-            return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message)
+            return render_template("forms/book_edit.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message, authors=authors)
 
         book = BookObj(values["book_name"], values["released_year"], values["explanation"])
-        db.book.add_book(book)
+        # TODO Control -  Get book_id last added book
+        book_id = db.book.add_book(book)
+        for author_id in values["authors"]:
+            db.book_author.add(book_id, author_id)
         return redirect(url_for("books_page"))
 
 

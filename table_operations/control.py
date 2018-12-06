@@ -1,10 +1,12 @@
 from flask import current_app
 
+
 class Control:
     class Input:
         @staticmethod
         def book(values):
             err_message = None
+
             # Invalid input control
             if len(values["explanation"]) >= 1000:
                 err_message = "Explanation cannot be more than 1000 character"
@@ -18,8 +20,9 @@ class Control:
         def book_edition(values, edition_number=None, book_id=None):
             err_message = None
             db = current_app.config["db"]       # AHMED EKLEDI
+
             # Invalid input control
-            if not db.book.get_row(values['book_id']):  # AHMED EDITLEDI
+            if not db.book.get_row(values['book_id']):  # AHMED DUZENLEDI
                 err_message = "There is not this book id"
             elif book_id and book_id != int(values['book_id']):
                 err_message = "This is editing page. Book cannot be change"
@@ -43,5 +46,24 @@ class Control:
                 err_message = "Number of page must be digit"
             elif len(values["language"]) >= 50:
                 err_message = "Language cannot be more than 50 character"
+
+            return err_message
+
+        @staticmethod
+        def comment(values):
+            db = current_app.config["db"]
+            err_message = None
+
+            # Invalid input control
+            if not db.customer.get_row(where_columns="CUSTOMER_ID", where_values=str(values["customer_id"])):
+                err_message = "There is no customer with this customer_id"
+            elif not db.book.get_row(values["book_id"]):
+                err_message = "There is no book with this book_id"
+            elif len(values["comment_title"]) >= 50:
+                err_message = "Comment title cannot be more than 50 character"
+            elif len(values["comment_statement"]) >= 500:
+                err_message = "Comment statement cannot be more than 500 character"
+            elif int(values["rating"]) > 5 or int(values["rating"]) <= 0:
+                err_message = "Comment rate must be between 1 and 5"
 
             return err_message

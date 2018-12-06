@@ -36,14 +36,18 @@ def book_page(book_key):
 
     # Take editions, authors, and comments of this book
     editions = db.book_edition.get_rows_by_book(book_key)
-    authors = ["kitaba", "göre", "bütün", "yazarları", "alma", "fonksiyonu"]  # TODO Kitabın bütün yazarlarını alma fonksiyonu
+    author_names = []  # TODO Kitabın bütün yazarlarını alma fonksiyonu
+    for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=str(book_key)):
+        for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
+            for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
+                author_names.append(person.person_name + " " + person.person_surname)
     comments = db.comment.get_table()  # TODO !!!Kitabın!!! bütün yorumlarını alma fonksiyonu
 
     # If the book page is displayed
     if request.method == "GET":
         # Blank comment form
         new_comment_values = {"customer_id": "", "book_id": "", "comment_title": "", "comment_statement": "", "rating": ""}
-        return render_template("book.html", book=book, authors=authors, editions=editions, comments=comments, new_comment_values=new_comment_values)
+        return render_template("book.html", book=book, authors=author_names, editions=editions, comments=comments, new_comment_values=new_comment_values)
     # If the new comment is added
     else:
         # Take values from add_comment form
@@ -52,7 +56,7 @@ def book_page(book_key):
 
         comment_err_message = Control().Input().comment(new_comment_values)
         if comment_err_message:
-            return render_template("book.html", book=book, authors=authors, editions=editions, comments=comments, comment_err_message=comment_err_message, new_comment_values=new_comment_values)
+            return render_template("book.html", book=book, authors=author_names, editions=editions, comments=comments, comment_err_message=comment_err_message, new_comment_values=new_comment_values)
 
         # Add comment to database
         comment = CommentObj(new_comment_values["customer_id"], new_comment_values["book_id"], new_comment_values["comment_title"], new_comment_values["comment_statement"], new_comment_values["rating"])

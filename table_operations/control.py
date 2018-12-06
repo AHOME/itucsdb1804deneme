@@ -55,7 +55,7 @@ class Control:
             err_message = None
 
             # Invalid input control
-            if not db.customer.get_row(condition="CUSTOMER_ID", value=str(values["customer_id"])):
+            if not db.customer.get_row(where_columns="CUSTOMER_ID", where_values=str(values["customer_id"])):
                 err_message = "There is no customer with this customer_id"
             elif not db.book.get_row(values["book_id"]):
                 err_message = "There is no book with this book_id"

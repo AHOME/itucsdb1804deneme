@@ -13,23 +13,23 @@ class baseClass:
             sys.exit(1)
 
 
-    def deleteGeneric(self, where_values, where_columns):
+    def deleteGeneric(self, where_columns, where_values):
         '''
-        @param values (list), conditions (list)
+        @param where_columns (list), where_values (list)
         '''
 
         query = self.deleteFlex(where_columns)
         fill = (where_values, )
         self.execute(query, fill)
 
-    def updateGeneric(self, new_values, update_columns, where_values, where_columns):
-        query = self.updateFlex(where_columns, update_columns)
+    def updateGeneric(self, update_columns, new_values, where_columns, where_values):
+        query = self.updateFlex(update_columns, where_columns)
         fill = (*new_values, *where_values)
         self.execute(query, fill)
 
-    def getRowGeneric(self, where_columns, where_values, select_columns):
-        query = self.getRowFlex(where_columns, select_columns)
-        fill = (where_values, )
+    def getRowGeneric(self, select_columns, where_columns=None, where_values=None):
+        query = self.getRowFlex(select_columns, where_columns)
+        fill = (where_values, ) if where_columns is not None else None
 
         result = self.execute(query, fill)
         if result is not None:
@@ -40,10 +40,10 @@ class baseClass:
                 result = result[0]
         return result
 
-    def getTableGeneric(self, where_columns=None, where_values=None, select_columns=None):
+    def getTableGeneric(self, select_columns, where_columns=None, where_values=None):
         results_list = []
 
-        query = self.getTableFlex(where_columns, select_columns)
+        query = self.getTableFlex(select_columns, where_columns)
         fill = (where_values, ) if where_columns is not None else None
 
         result = self.execute(query, fill)        
@@ -74,11 +74,11 @@ class baseClass:
         valStr = ("{} = %s, "*(len(update_columns)-1) + "{} = %s ").format(*update_columns, )
         return ("UPDATE {tab} SET ".format(tab=self.tablename, ))+valStr+self.whereFlex(where_columns)
 
-    def getRowFlex(self, where_columns, select_columns="*"):
+    def getRowFlex(self, select_columns="*", where_columns=None):
         selectStr = ("SELECT {}"+(", {}"*(len(select_columns)-1))).format(*select_columns)
         return selectStr+(" FROM {tab}").format(tab=self.tablename)+self.whereFlex(where_columns)
 
-    def getTableFlex(self, where_columns, select_columns="*"):
+    def getTableFlex(self, select_columns="*", where_columns=None):
         selectStr = ("SELECT {}"+(", {}"*(len(select_columns)-1))).format(*select_columns)
         return selectStr+(" FROM {tab}".format(tab=self.tablename))+self.whereFlex(where_columns)
 

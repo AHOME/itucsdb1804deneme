@@ -127,9 +127,8 @@ class ProductObj:
 
 # myilmaz
 class TransactionProductObj:
-    def __init__(self, transaction_id, store_id, book_id, edition_number, piece, unit_price):
+    def __init__(self, transaction_id, book_id, edition_number, piece, unit_price):
         self.transaction_id = transaction_id
-        self.store_id = store_id
         self.book_id = book_id
         self.edition_number = edition_number
         self.piece = piece

@@ -1,5 +1,4 @@
 from flask import current_app, render_template, abort, request, redirect, url_for, session, flash
-from tables import *
 
 
 def home_page():

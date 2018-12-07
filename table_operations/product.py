@@ -1,5 +1,5 @@
 from table_operations.baseClass import baseClass
-from tables import ProductObj, BookObj, BookEditionObj, StoreObj
+from tables import ProductObj, BookObj, BookEditionObj
 import psycopg2 as dbapi2
 
 class Product(baseClass):
@@ -44,7 +44,7 @@ class Product(baseClass):
             cursor.execute(query, fill)
             product = cursor.fetchone()
             if product is not None:
-                _product = ProductObj(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7], product[8])
+                _product = ProductObj(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7])
 
         return _product
 
@@ -57,14 +57,14 @@ class Product(baseClass):
             cursor = connection.cursor()
             cursor.execute(query)
             for product in cursor:
-                product_ = ProductObj(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7], product[8])
+                product_ = ProductObj(product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7])
                 products.append(product_)
             cursor.close()
 
         return products
 
     def get_products_all_info(self, store_id=None, book_id=None, edition_number=None, is_active=True):
-        products_editions_books_store = []
+        products_editions_books = []
 
         query = "SELECT * FROM PRODUCT, BOOK_EDITION, BOOK, STORE " \
                 "WHERE ((PRODUCT.STORE_ID = STORE.STORE_ID " \
@@ -91,11 +91,10 @@ class Product(baseClass):
             cursor.execute(query, fill)
             for all_info in cursor:
                 print(all_info)
-                product_ = ProductObj(all_info[0], all_info[1], all_info[2], all_info[3], all_info[4], all_info[5], all_info[6], all_info[7], all_info[8])
+                product_ = ProductObj(all_info[0], all_info[1], all_info[2], all_info[3], all_info[4], all_info[5], all_info[6], all_info[7])
                 book_editions_ = BookEditionObj(all_info[9], all_info[10], all_info[11], all_info[12], all_info[13], all_info[14], all_info[15])
                 book_ = BookObj(all_info[17], all_info[18], all_info[19], book_id=all_info[16])
-                store_ = StoreObj(all_info[21], all_info[22], all_info[23], all_info[24], all_info[25], all_info[26], all_info[27], store_id=all_info[20])
-                products_editions_books_store.append([product_, book_editions_, book_, store_])
+                products_editions_books.append([product_, book_editions_, book_])
             cursor.close()
 
-        return products_editions_books_store
+        return products_editions_books

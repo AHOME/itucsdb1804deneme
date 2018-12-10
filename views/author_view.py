@@ -33,7 +33,7 @@ def add_author(name=None):
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
 
-    return render_template("author/add_author.html", form=form)
+    return render_template("author/author_add.html", form=form)
 
 
 
@@ -50,7 +50,7 @@ def author_edit_page(author_id):
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
     
-    return render_template("author/edit_author.html", form=form, person=person_obj, author=author_obj)
+    return render_template("author/author_edit.html", form=form, person=person_obj, author=author_obj)
 
 
 

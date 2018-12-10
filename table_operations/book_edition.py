@@ -2,6 +2,7 @@ from table_operations.baseClass import baseClass
 from tables import BookEditionObj
 import psycopg2 as dbapi2
 
+
 class BookEdition(baseClass):
     def __init__(self):
         super().__init__("BOOK_EDITION", BookEditionObj)
@@ -58,11 +59,11 @@ class BookEdition(baseClass):
             book_id = str(book_id)
 
         query = "SELECT * FROM BOOK_EDITION WHERE (BOOK_ID = %s)"
-        fill = (book_id)
+        fill = (book_id,)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
-            cursor.execute(query, fill)
+            cursor.execute(query %fill)
             for book_edition in cursor:
                 book_edition_ = BookEditionObj(book_edition[0], book_edition[1], book_edition[2], book_edition[3], book_edition[4], book_edition[5], book_edition[6])
                 book_edition_table.append(book_edition_)

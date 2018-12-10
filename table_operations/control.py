@@ -51,8 +51,8 @@ class Control:
 
         @staticmethod
         def comment(values):
-            db = current_app.config["db"]
             err_message = None
+            db = current_app.config["db"]
 
             # Invalid input control
             if not db.customer.get_row(where_columns="CUSTOMER_ID", where_values=str(values["customer_id"])):
@@ -66,4 +66,18 @@ class Control:
             elif int(values["rating"]) > 5 or int(values["rating"]) <= 0:
                 err_message = "Comment rate must be between 1 and 5"
 
+            return err_message
+
+        @staticmethod
+        def buying(values):
+            err_message = None
+
+            # Invalid input control
+            return err_message
+
+        @staticmethod
+        def product(values):
+            err_message = None
+
+            # Invalid input control
             return err_message

@@ -6,6 +6,7 @@ from flask import flash, current_app
 
 
 def sign_up(username, password, email, name, surname, phone, dob, gender, nationality=""):
+    db = current_app.config["db"]
     pass_hash = hasher.hash(password)
     print(pass_hash)
     print(len(pass_hash))
@@ -33,6 +34,7 @@ def change_password(username, pass_old, pass_new):
 
 
 def check_password(username, pass_input):
+    db = current_app.config["db"]
     pass_hash = db.customer.get_row("USERNAME", username, "PASS_HASH")
     if pass_hash != None:
         return hasher.verify(pass_input, pass_hash)
@@ -41,5 +43,6 @@ def check_password(username, pass_input):
 
 
 def set_password(username, password):
+    db = current_app.config["db"]
     pass_hash = hasher.hash(password)
     db.customer.update([pass_hash, username], "USERNAME", 1, "PASS_HASH")

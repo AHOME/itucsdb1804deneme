@@ -18,19 +18,19 @@ def sign_up(username, password, email, name, surname, phone, dob, gender, nation
 
 def login(username, password):
     if check_password(username, password):
-        flash("You have successfully logged in.")
+        flash("You have successfully logged in.", 'success')
         return True
     else:
-        flash("You have entered a wrong password or username.")
+        flash("You have entered a wrong password or username.", 'danger')
         return False
 
 
 def change_password(username, pass_old, pass_new):
     if check_password(username, pass_old) != True:
-        flash("You have entered a wrong password.")
+        flash("You have entered a wrong password.", 'danger')
     else:
         set_password(username, pass_new)
-        flash("Password has successfully changed.")
+        flash("Password has successfully changed.", 'success')
 
 
 def check_password(username, pass_input):

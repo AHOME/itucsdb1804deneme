@@ -48,23 +48,25 @@ def product_page(book_id, edition_number):
 def product_add_page():
     db = current_app.config["db"]
 
-    book_editions = db.book_edition.get_table()
+    books_and_editions = []
+    for book in db.book.get_table():
+        books_and_editions.append({'book': book, 'editions': db.book_edition.get_table(where_columns=db.book_edition.columns["book_id"], where_values=book.book_id)})
 
     # If the product add page is displayed
     if request.method == "GET":
-        values = {"book_id": "", "edition_number": "", "remaining": "", "actual_price": "", "number_of_sells": "", "product_explanation": "", "is_active": ""}
-        return render_template("product/product_form.html", title="Product Adding", values=values, book_editions=book_editions)
+        values = {"book_and_edition": "", "remaining": "", "actual_price": "", "product_explanation": "", "is_active": ""}
+        return render_template("product/product_form.html", title="Product Adding", values=values, books_and_editions=books_and_editions)
     # If product is added
     else:
         # Take values from buying form
-        values = {"book_id": request.form["book_id"], "edition_number": request.form["edition_number"], "remaining": request.form["remaining"], "actual_price": request.form["actual_price"], "number_of_sells": request.form["number_of_sells"], "product_explanation": request.form["product_explanation"], "is_active": request.form["is_active"]}
+        values = {"book_and_edition": request.form["book_and_edition"], "remaining": request.form["remaining"], "actual_price": request.form["actual_price"], "product_explanation": request.form["product_explanation"], "is_active": request.form.getlist("is_active") == ['active']}
 
         # Invalid input control
         err_message = Control().Input().product(values)
         if err_message:
-            return render_template("product/product_form.html", title="Product Adding", values=values, book_editions=book_editions, err_message=err_message)
+            return render_template("product/product_form.html", title="Product Adding", values=values, books_and_editions=books_and_editions, err_message=err_message)
 
-        product = ProductObj(values["book_id"], values["edition_number"], values["remaining"], values["actual_price"], values["number_of_sells"], values["product_explanation"], values["is_active"])
+        product = ProductObj(values["book_and_edition"].split()[0], values["book_and_edition"].split()[1], values["remaining"], values["actual_price"], 0, values["product_explanation"], values["is_active"])
         book_id, edition_number = db.product.add(product)
         return redirect(url_for("product_page", book_id=book_id, edition_number=edition_number))
 
@@ -72,34 +74,37 @@ def product_add_page():
 def product_edit_page(book_id, edition_number):
     db = current_app.config["db"]
 
-    book_editions = db.book_edition.get_table()
+    # Take product information
+    product = db.product.get_row(book_id, edition_number)
+    # If there is no product with this book_key, abort 404 page
+    if product is None:
+        abort(404)
+
+    books_and_editions = []
+    for book in db.book.get_table():
+        books_and_editions.append({'book': book, 'editions': db.book_edition.get_table(where_columns=db.book_edition.columns["book_id"], where_values=book.book_id)})
 
     # If the product add page is displayed
     if request.method == "GET":
-        # Take product information
-        product = db.product.get_row(book_id, edition_number)
-        # If there is no product with this book_key, abort 404 page
-        if product is None:
-            abort(404)
-
-        values = {"book_id": product.book_id, "edition_number": product.edition_number, "remaining": product.remaining, "actual_price": product.actual_price, "number_of_sells": product.number_of_sells, "product_explanation": product.product_explanation, "is_active": product.is_active}
-        return render_template("product/product_form.html", title="Product Adding", values=values, book_editions=book_editions)
+        values = {"book_and_edition": str(product.book_id) + " " + str(product.edition_number), "remaining": product.remaining, "actual_price": product.actual_price, "product_explanation": product.product_explanation, "is_active": product.is_active}
+        return render_template("product/product_form.html", title="Product Editing", values=values, books_and_editions=books_and_editions)
     # If product is added
     else:
         # Take values from buying form
-        values = {"book_id": request.form["book_id"], "edition_number": request.form["edition_number"], "remaining": request.form["remaining"], "actual_price": request.form["actual_price"], "number_of_sells": request.form["number_of_sells"], "product_explanation": request.form["product_explanation"], "is_active": request.form["is_active"]}
+        values = {"book_and_edition": request.form["book_and_edition"], "remaining": request.form["remaining"], "actual_price": request.form["actual_price"], "product_explanation": request.form["product_explanation"], "is_active": request.form.getlist("is_active") == ['active']}
 
         # Invalid input control
-        err_message = Control().Input().product(values)
+        err_message = Control().Input().product(values, book_and_edition=str(product.book_id) + " " + str(product.edition_number))
         if err_message:
-            return render_template("product/product_form.html", title="Product Adding", values=values, book_editions=book_editions, err_message=err_message)
+            return render_template("product/product_form.html", title="Product Editing", values=values, books_and_editions=books_and_editions, err_message=err_message)
 
-        product = ProductObj(values["book_id"], values["edition_number"], values["remaining"], values["actual_price"], values["number_of_sells"], values["product_explanation"], values["is_active"])
-        book_id, edition_number = db.product.add(product)
+        product = ProductObj(product.book_id, product.edition_number, values["remaining"], values["actual_price"], product.number_of_sells, values["product_explanation"], values["is_active"])
+        book_id, edition_number = db.product.update(product.book_id, product.edition_number, product)
         return redirect(url_for("product_page", book_id=book_id, edition_number=edition_number))
 
 
 def product_delete_page(book_id, edition_number):
     db = current_app.config["db"]
+
     db.product.delete(book_id, edition_number)
     return redirect(url_for("book_page", book_key=book_id))

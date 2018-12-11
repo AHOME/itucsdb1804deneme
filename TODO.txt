@@ -9,7 +9,7 @@ TODO ADD : MY - Ürün sayfası oluştur
 TODO ADD : MY - book_edition_page sayfasına ürün bilgileri eklenecek
 TODO ADD : MY - Ürün sayfalarında ilgili baskının yorumları gözterilirken, kitap sayfalarında tüm baskıların yorumlar gösterilecek
 TODO ADD : MY - Ürünler ile ilgili sayfaların bağlantılarını menüye ve sayfalardaki ilgili yerlere koy
-
+TODO ADD : MY - Kitap eklerken kategori seç
 
 TODO CONTROL : AYK - baseClass.py'de getRowGeneric fonksiyonunda where_values integer olabilir, integer'da split yok
 TODO CONTROL : AYK - baseClass.py'de getRowGeneric fonksiyonunda where_values boşluklu bir değer olabilir,

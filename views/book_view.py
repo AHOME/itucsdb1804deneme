@@ -103,7 +103,7 @@ def book_edit_page(book_key):
         values = {"book_name": book.book_name, "released_year": book.release_year, "explanation": book.explanation, "selected_author_ids": selected_author_ids}
         return render_template("book/book_form.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book editing", err_message=err_message, authors=authors)
     else:
-        values = {"book_name": request.form["book_name"], "released_year": request.form["released_year"], "explanation": request.form["explanation"]}
+        values = {"book_name": request.form["book_name"], "released_year": request.form["released_year"], "explanation": request.form["explanation"], "selected_author_ids": request.form.getlist("selected_author_ids")}
 
         # Invalid input control
         err_message = Control().Input().book(values)
@@ -112,7 +112,7 @@ def book_edit_page(book_key):
 
         book = BookObj(values["book_name"], values["released_year"], values["explanation"])
         book_id = db.book.update(book_key, book)
-        db.book_author.delete(where_columns="BOOK_ID", where_values=book_id)
+        db.book_author.delete(where_columns="BOOK_ID", where_values=[book_id])
         for author_id in values["selected_author_ids"]:
             db.book_author.add(book_id, author_id)
         return redirect(url_for("book_page", book_key=book_key))

@@ -2,9 +2,9 @@ from flask import current_app, render_template, abort, request, redirect, url_fo
 from tables import AuthorObj, PersonObj
 from forms import AuthorForm
 
-db = current_app.config["db"]
 
 def authors_page():
+    db = current_app.config["db"]
     authors = db.author.get_table()
     return render_template("author/authors.html", authors=authors)
 
@@ -22,6 +22,7 @@ def author_take_info_from_form(form):
 
 
 def add_author(name=None):
+    db = current_app.config["db"]
     form = AuthorForm()
     if form.validate_on_submit():
         values = author_take_info_from_form(form)
@@ -38,6 +39,7 @@ def add_author(name=None):
 
 
 def author_edit_page(author_id):
+    db = current_app.config["db"]
     form = AuthorForm()
     author_obj = db.author.get_row("*", "AUTHOR_ID", author_id)
     person_obj = db.person.get_row("*", "PERSON_ID", author_obj.person_id)
@@ -55,5 +57,6 @@ def author_edit_page(author_id):
 
 
 def author_delete_page(author_id):
+    db = current_app.config["db"]
     db.author.delete(author_id)
     return redirect(url_for("authors_page"))

@@ -92,7 +92,6 @@ class Product(baseClass):
             cursor = connection.cursor()
             cursor.execute(query, fill)
             for all_info in cursor:
-                print("all info:", all_info)
                 product_ = ProductObj(all_info[0], all_info[1], all_info[2], all_info[3], all_info[4], all_info[6], all_info[7], date_added=all_info[5])
                 book_editions_ = BookEditionObj(all_info[8], all_info[9], all_info[10], all_info[11], all_info[12], all_info[13], all_info[14])
                 book_ = BookObj(all_info[16], all_info[17], all_info[18], book_id=all_info[15])

@@ -2,7 +2,6 @@
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
 
-
 <div class="container">
   <div class="row">
     <div class="col-md-4">
@@ -82,10 +81,16 @@
     </div>
   </div>
   <div class="row" style="text-align: center;">
+    <form class="form-inline" action="" method="post" name="add_to_cart" >
+      <label class="sr-only" for="piece">Name</label>
+      <div class="input-group">
+        <span class="input-group-addon">Piece:</span>
+        <input type="number" class="form-control" id="piece" name="piece" placeholder="Piece" required="required" value="1" min="1">
+      </div>
+      <button type="submit" class="btn btn-success my-1">Add to Cart</button>
 
+    </form>
   </div>
 </div>
-
-
 
 {% endblock %}

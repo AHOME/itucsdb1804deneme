@@ -1,6 +1,6 @@
 from flask import current_app, render_template, abort, request, redirect, url_for
 from table_operations.control import Control
-from tables import ProductObj
+from tables import ProductObj, TransactionProductObj
 
 
 def products_page():
@@ -35,11 +35,11 @@ def product_page(book_id, edition_number):
     if request.method == "GET":
         # Blank buying form
         buying_values = {}
-        return render_template("product/product.html", product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values)
+        return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values)
     # If it is added to shopping cart
     else:
         # Take values from buying form
-        buying_values = {}
+        buying_values = {"piece": request.form["piece"]}
 
         # Invalid input control
         err_message = Control().Input().buying(buying_values)
@@ -47,6 +47,10 @@ def product_page(book_id, edition_number):
             return render_template("product/product.html", product=product, buying_values=buying_values, err_message=err_message)
 
         # Add product to shopping cart
+        # TODO get transaction id
+        transaction_id = 0
+        transaction_product = TransactionProductObj(transaction_id, product.book_id, product.edition_number, buying_values["piece"], product.actual_price)
+        db.transaction_product.add(transaction_product)
         pass
 
         return redirect(url_for("product_page", book_id=book_id, edition_number=edition_number))

@@ -2,6 +2,7 @@ from flask import current_app, render_template, abort, request, redirect, url_fo
 from table_operations.control import Control
 from tables import BookEditionObj
 
+
 def book_edition_page(book_id, edition_number):
     db = current_app.config["db"]
     book_edition = db.book_edition.get_row(book_id, edition_number)

@@ -17,8 +17,15 @@ def product_page(book_id, edition_number):
 
     # Take product information
     product = db.product.get_row(book_id, edition_number)
-    # If there is no product with this book_key, abort 404 page
-    if product is None:
+    edition = db.book_edition.get_row(book_id, edition_number)
+    book = db.book.get_row(book_id)
+    author_names = []  # TODO Kitabın bütün yazarlarını alma fonksiyonu
+    for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=book_id):
+        for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
+            for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
+                author_names.append(person.person_name + " " + person.person_surname)
+    # If there is not product, edition, or book with this book_key and edition_number, abort 404 page
+    if product is None or edition is None or book is None:
         abort(404)
 
     # Take necessary information
@@ -28,7 +35,7 @@ def product_page(book_id, edition_number):
     if request.method == "GET":
         # Blank buying form
         buying_values = {}
-        return render_template("product/product.html", product=product, buying_values=buying_values)
+        return render_template("product/product.html", product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values)
     # If it is added to shopping cart
     else:
         # Take values from buying form
@@ -94,7 +101,7 @@ def product_edit_page(book_id, edition_number):
         values = {"book_and_edition": request.form["book_and_edition"], "remaining": request.form["remaining"], "actual_price": request.form["actual_price"], "product_explanation": request.form["product_explanation"], "is_active": request.form.getlist("is_active") == ['active']}
 
         # Invalid input control
-        err_message = Control().Input().product(values, book_and_edition=str(product.book_id) + " " + str(product.edition_number))
+        err_message = Control().Input().product(values, is_new=False, book_and_edition=str(product.book_id) + " " + str(product.edition_number))
         if err_message:
             return render_template("product/product_form.html", title="Product Editing", values=values, books_and_editions=books_and_editions, err_message=err_message)
 
@@ -105,6 +112,5 @@ def product_edit_page(book_id, edition_number):
 
 def product_delete_page(book_id, edition_number):
     db = current_app.config["db"]
-
     db.product.delete(book_id, edition_number)
     return redirect(url_for("book_page", book_key=book_id))

@@ -3,13 +3,14 @@ import datetime
 from table_operations.control import Control
 from tables import BookObj, CommentObj
 from flask_login import current_user
+from views.comment_view import take_comments_with_and_by
 
 
 def books_page():
     db = current_app.config["db"]
     if request.method == "GET":
         books = []
-        for book, in db.book.get_table():
+        for book in db.book.get_table():
             books.append((book, take_author_names_by_book(book.book_id), take_categories_by_book(book.book_id)))
         return render_template("book/books.html", books=books)
     else:
@@ -33,7 +34,7 @@ def book_page(book_key):
     # Take editions, authors, and comments of this book
     editions = db.book_edition.get_rows_by_book(book_key)
     author_names = take_author_names_by_book(book_key)
-    comments = db.comment.get_table()  # TODO !!!Kitabın!!! bütün yorumlarını alma fonksiyonu
+    comments = take_comments_with_and_by(book_id=book_key)
     categories = take_categories_by_book(book_key)
 
     # If the book page is displayed

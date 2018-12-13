@@ -10,8 +10,8 @@
         <table id="mytable" class="table table-bordred table-striped">
           <thead>
             <th>ID</th>
-            <th>Customer ID</th>
-            <th>Book ID</th>
+            <th>Customer</th>
+            <th>Book</th>
             <th>Title</th>
             <th>Statement</th>
             <th>Added Time</th>
@@ -21,11 +21,11 @@
             <th>Delete</th>
           </thead>
           <tbody>
-            {% for comment in comments %}
+            {% for comment, customer, book in comments %}
             <tr>
               <td>{{ comment.comment_id }}</td>
-              <td>{{ comment.customer_id }}</td>
-              <td>{{ comment.book_id }}</td>
+              <td>{{ customer.username }}</td>
+              <td><a href="{{url_for('book_page', book_key=book.book_id)}}">{{book.book_name}}</a></td>
               <td>{{ comment.comment_title }}</td>
               <td>{{ comment.comment_statement }}</td>
               <td>{{ comment.added_time }}</td>

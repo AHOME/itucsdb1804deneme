@@ -79,29 +79,32 @@ class Book(baseClass):
             for book in cursor:
                 ret_list = []
                 book_ = BookObj(book[1], book[2], book[3], book_id=book[0])
-                ret_list.append(book_)
-                if with_author:
-                    author_names = []  # Kitabın bütün yazarlarını alma fonksiyonu
-                    with connection.cursor() as curs:
-                        try:
-                            curs.execute(query_authors, (book_.book_id,))
-                            for author in curs:
-                                author_names.append(author[0] + " " + author[1])
-                            ret_list.append(author_names)
-                        except dbapi2.Error as err:
-                            print("Error: %s", err)
-                if with_category:
-                    category_names = []
-                    with connection.cursor() as curs:
-                        try:
-                            curs.execute(query_categories, (book_.book_id,))
-                            for category_name in curs:
-                                category_names.append(category_name[0])
-                            ret_list.append(category_names)
-                        except dbapi2.Error as err:
-                            print("Error: %s", err)
+                if not with_author and not with_category:
+                    books.append(book_)
+                else:
+                    ret_list.append(book_)
+                    if with_author:
+                        author_names = []  # Kitabın bütün yazarlarını alma fonksiyonu
+                        with connection.cursor() as curs:
+                            try:
+                                curs.execute(query_authors, (book_.book_id,))
+                                for author in curs:
+                                    author_names.append(author[0] + " " + author[1])
+                                ret_list.append(author_names)
+                            except dbapi2.Error as err:
+                                print("Error: %s", err)
+                    if with_category:
+                        category_names = []
+                        with connection.cursor() as curs:
+                            try:
+                                curs.execute(query_categories, (book_.book_id,))
+                                for category_name in curs:
+                                    category_names.append(category_name[0])
+                                ret_list.append(category_names)
+                            except dbapi2.Error as err:
+                                print("Error: %s", err)
 
-                books.append(ret_list)
+                    books.append(ret_list)
             cursor.close()
 
         return books

@@ -9,6 +9,5 @@ TODO ADD : MY - Otomatik Transaction/Sepet oluşturma
 TODO ADD : MY - Transaction/Sepet düzenleme
 TODO ADD : MY - Transaction/Sepet siparişi verme
 TODO ADD : MY - Ürün silme bağlantıları
-TODO ADD : MY - TRANSACTION_PRODUCT ekleme/silme/düzenleme/
-
-TODO ADD : AYK - Sepetim sayfası oluştur.
+TODO ADD : MY - TRANSACTION_PRODUCT silme/düzenleme/
+TODO ADD : MY - Sepetim sayfası oluştur.

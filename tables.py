@@ -105,7 +105,8 @@ class BookEditionObj:
 
 # myilmaz
 class TransactionObj:
-    def __init__(self, customer_id, address_id, transaction_time, payment_type, explanation, is_completed=False):
+    def __init__(self, transaction_id, customer_id, address_id, transaction_time, payment_type, explanation, is_completed):
+        self.transaction_id = transaction_id
         self.customer_id = customer_id
         self.address_id = address_id
         self.transaction_time = transaction_time

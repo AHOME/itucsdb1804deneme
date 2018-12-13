@@ -1,6 +1,7 @@
 from flask import current_app, render_template, abort, request, redirect, url_for
 from table_operations.control import Control
 from tables import ProductObj, TransactionProductObj
+from flask_login import current_user
 
 
 def products_page():
@@ -24,8 +25,10 @@ def product_page(book_id, edition_number):
         for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
             for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
                 author_names.append(person.person_name + " " + person.person_surname)
+    transaction = db.transaction.get_row(where_columns=["CUSTOMER_ID", "IS_COMPLETED"], where_values=[current_user.id, False])
+
     # If there is not product, edition, or book with this book_key and edition_number, abort 404 page
-    if product is None or edition is None or book is None:
+    if product is None or edition is None or book is None or transaction is None:
         abort(404)
 
     # Take necessary information
@@ -41,15 +44,14 @@ def product_page(book_id, edition_number):
         # Take values from buying form
         buying_values = {"piece": request.form["piece"]}
 
+        transaction_product = TransactionProductObj(transaction.transaction_id, product.book_id, product.edition_number, buying_values["piece"], product.actual_price)
+
         # Invalid input control
-        err_message = Control().Input().buying(buying_values)
+        err_message = Control().Input().buying(buying_values, transaction_product=transaction_product, product=product)
         if err_message:
-            return render_template("product/product.html", product=product, buying_values=buying_values, err_message=err_message)
+            return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values, err_message=err_message)
 
         # Add product to shopping cart
-        # TODO get transaction id
-        transaction_id = 0
-        transaction_product = TransactionProductObj(transaction_id, product.book_id, product.edition_number, buying_values["piece"], product.actual_price)
         db.transaction_product.add(transaction_product)
         pass
 

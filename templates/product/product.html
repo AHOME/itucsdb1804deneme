@@ -81,6 +81,11 @@
     </div>
   </div>
   <div class="row" style="text-align: center;">
+    {% if err_message %}
+    <div class="alert alert-danger" role="alert">
+      {{ err_message }}
+    </div>
+    {% endif %}
     <form class="form-inline" action="" method="post" name="add_to_cart" >
       <label class="sr-only" for="piece">Name</label>
       <div class="input-group">

@@ -69,10 +69,16 @@ class Control:
             return err_message
 
         @staticmethod
-        def buying(values):
+        def buying(values, transaction_product, product):
             err_message = None
+            db = current_app.config["db"]
 
             # Invalid input control
+            if int(product.remaining) < int(values["piece"]):
+                err_message = "There is no enough product"
+            elif db.transaction_product.get_row(where_columns=["TRANSACTION_ID", "BOOK_ID", "EDITION_NUMBER"], where_values=[transaction_product.transaction_id, transaction_product.book_id, transaction_product.edition_number]):
+                err_message = "Shopping cart has this product. You can't put the same product."
+
             return err_message
 
         @staticmethod

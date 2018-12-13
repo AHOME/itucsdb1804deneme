@@ -29,7 +29,7 @@
               <td>{{ comment.comment_title }}</td>
               <td>{{ comment.comment_statement }}</td>
               <td>{{ comment.added_time }}</td>
-              <td>{{ comment.update_time }}</td>
+              <td>{{ comment.updated_time }}</td>
               <td>{{ comment.rating }}</td>
               <td><a href="{{ url_for('comment_edit_page', comment_id=comment.comment_id) }}"><p title="Edit"><span class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></span></p></a></td>
               <td><a href="{{ url_for('comment_delete_page', comment_id=comment.comment_id) }}"><p title="Delete"><span class="glyphicon glyphicon-trash btn btn-danger btn-xs"></span></p></a></td>

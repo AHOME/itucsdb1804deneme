@@ -14,6 +14,9 @@ class Control:
                 err_message = "Released year must be digit"
             elif len(values["book_name"]) >= 100:
                 err_message = "Book name cannot be more than 100 character"
+            # TODO categoories and authors control
+
+
             return err_message
 
         @staticmethod

@@ -16,6 +16,10 @@
           <td>{{ (', ').join(authors) }}</td>
         </tr>
         <tr>
+          <td><b>Categories: </b></td>
+          <td>{% for category in categories %}{{ category.category_name }}, {% endfor %}</td>
+        </tr>
+        <tr>
           <td><b>Release Year: </b></td>
           <td>{{ book.release_year }}</td>
         </tr>

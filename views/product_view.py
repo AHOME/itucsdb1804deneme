@@ -2,7 +2,7 @@ from flask import current_app, render_template, abort, request, redirect, url_fo
 from table_operations.control import Control
 from tables import ProductObj, TransactionProductObj
 from flask_login import current_user
-
+from views.book_view import take_categories_by_book, take_author_names_by_book
 
 def products_page():
     db = current_app.config["db"]
@@ -20,11 +20,8 @@ def product_page(book_id, edition_number):
     product = db.product.get_row(book_id, edition_number)
     edition = db.book_edition.get_row(book_id, edition_number)
     book = db.book.get_row(book_id)
-    author_names = []  # TODO Kitabın bütün yazarlarını alma fonksiyonu
-    for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=book_id):
-        for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
-            for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
-                author_names.append(person.person_name + " " + person.person_surname)
+    author_names = take_author_names_by_book(book_id)
+    categories = take_categories_by_book(book_id)
     transaction = db.transaction.get_row(where_columns=["CUSTOMER_ID", "IS_COMPLETED"], where_values=[current_user.id, False])
 
     # If there is not product, edition, or book with this book_key and edition_number, abort 404 page
@@ -38,7 +35,7 @@ def product_page(book_id, edition_number):
     if request.method == "GET":
         # Blank buying form
         buying_values = {}
-        return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values)
+        return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, categories=categories, buying_values=buying_values)
     # If it is added to shopping cart
     else:
         # Take values from buying form
@@ -49,7 +46,7 @@ def product_page(book_id, edition_number):
         # Invalid input control
         err_message = Control().Input().buying(buying_values, transaction_product=transaction_product, product=product)
         if err_message:
-            return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, buying_values=buying_values, err_message=err_message)
+            return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, categories=categories, buying_values=buying_values, err_message=err_message)
 
         # Add product to shopping cart
         db.transaction_product.add(transaction_product)

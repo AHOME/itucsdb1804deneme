@@ -79,8 +79,6 @@ class Control:
             # Invalid input control
             if int(product.remaining) < int(values["piece"]):
                 err_message = "There is no enough product"
-            elif db.transaction_product.get_row(where_columns=["TRANSACTION_ID", "BOOK_ID", "EDITION_NUMBER"], where_values=[transaction_product.transaction_id, transaction_product.book_id, transaction_product.edition_number]):
-                err_message = "Shopping cart has this product. You can't put the same product."
 
             return err_message
 
@@ -101,6 +99,21 @@ class Control:
             elif float(values["actual_price"]) < 0:
                 err_message = "Price cannot be small than 0"
             elif len(values["product_explanation"]) > 500:
+                err_message = "Explanation cannot be more than 500 character"
+
+            return err_message
+
+        @staticmethod
+        def transaction(values, transaction):
+            err_message = None
+            db = current_app.config["db"]
+
+            # Invalid input control
+            if db.customer_address.get_row(where_columns=["CUSTOMER_ID", "ADDRESS_ID"], where_values=[transaction.customer_id, values["address_id"]]):
+                err_message = "This customer doesn't have this address."
+            elif len(values["payment_type"]) > 30:
+                err_message = "Payment type cannot be more than 30 character"
+            elif len(values["transaction_explanation"]) > 500:
                 err_message = "Explanation cannot be more than 500 character"
 
             return err_message

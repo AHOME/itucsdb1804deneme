@@ -28,9 +28,6 @@ def product_page(book_id, edition_number):
     if product is None or edition is None or book is None or transaction is None:
         abort(404)
 
-    # Take necessary information
-    pass
-
     # If the product page is displayed
     if request.method == "GET":
         # Blank buying form
@@ -49,8 +46,10 @@ def product_page(book_id, edition_number):
             return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, categories=categories, buying_values=buying_values, err_message=err_message)
 
         # Add product to shopping cart
-        db.transaction_product.add(transaction_product)
-        pass
+        if db.transaction_product.get_row(where_columns=["TRANSACTION_ID", "BOOK_ID", "EDITION_NUMBER"], where_values=[transaction_product.transaction_id, transaction_product.book_id, transaction_product.edition_number]):
+            db.transaction_product.update(update_columns=["PIECE"], new_values=[transaction_product.piece], where_columns=["TRANSACTION_ID", "BOOK_ID", "EDITION_NUMBER"], where_values=[transaction_product.transaction_id, transaction_product.book_id, transaction_product.edition_number])
+        else:
+            db.transaction_product.add(transaction_product)
 
         return redirect(url_for("product_page", book_id=book_id, edition_number=edition_number))
 

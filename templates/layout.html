@@ -7,14 +7,14 @@
 
    
     {% if request.path == "/login" %}
-      {% block head %}{% endblock %}
+    {% block head %}{% endblock %}
     {% else %}
-      <!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <!-- jQuery library -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-      <!-- Latest compiled JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     {% endif %}
 
     <link rel="stylesheet" href="{{ url_for('static', filename='mybooks.css') }}"/>
@@ -74,6 +74,7 @@
               <li><a href="{{ url_for('login_page') }}">Login</a></li>
               <li><a href="{{ url_for('signup_page') }}">Sign Up</a></li>
               {% else %}
+              <li><a class="btn" href="{{ url_for('transaction_page') }}"> <b style="color: red;">Shopping Cart</b> <span class="btn btn-warning btn-xs glyphicon glyphicon-shopping-cart"></span></a></li>
               <li><a href="#" style="color: black;">{{ current_user.username }}</a></li>
               <li><a href="{{ url_for('logout_page') }}">Log out</a></li>
               {% endif %}

@@ -2,11 +2,7 @@
 
 TODO ADD : MY - Aynı veriden varsa tabloya bir daha ekleme
 TODO ADD : MY - Ürünler ile ilgili sayfaların bağlantılarını menüye ve sayfalardaki ilgili yerlere koy
-TODO ADD : MY - Transaction/Sepet düzenleme
-TODO ADD : MY - Transaction/Sepet siparişi verme
 TODO ADD : MY - Ürün silme bağlantıları
-TODO ADD : MY - TRANSACTION_PRODUCT silme/düzenleme
-TODO ADD : MY - Sepetim sayfası oluştur.
 TODO ADD : MY -
 TODO ADD : MY - Category ve yazar sayfaları oluştur, o yazarın/kategorinin kitaplarını göster
 

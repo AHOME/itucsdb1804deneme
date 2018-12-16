@@ -4,6 +4,7 @@ from tables import ProductObj, TransactionProductObj
 from flask_login import current_user
 from views.book_view import take_categories_by_book, take_author_names_by_book
 
+
 def products_page():
     db = current_app.config["db"]
     if request.method == "GET":
@@ -22,10 +23,9 @@ def product_page(book_id, edition_number):
     book = db.book.get_row(book_id)
     author_names = take_author_names_by_book(book_id)
     categories = take_categories_by_book(book_id)
-    transaction = db.transaction.get_row(where_columns=["CUSTOMER_ID", "IS_COMPLETED"], where_values=[current_user.id, False])
 
     # If there is not product, edition, or book with this book_key and edition_number, abort 404 page
-    if product is None or edition is None or book is None or transaction is None:
+    if product is None or edition is None or book is None:
         abort(404)
 
     # If the product page is displayed
@@ -35,6 +35,7 @@ def product_page(book_id, edition_number):
         return render_template("product/product.html", title=(book.book_name+" Product Page"), product=product, book=book, edition=edition, authors=author_names, categories=categories, buying_values=buying_values)
     # If it is added to shopping cart
     else:
+        transaction = db.transaction.get_row(where_columns=["CUSTOMER_ID", "IS_COMPLETED"], where_values=[current_user.id, False])
         # Take values from buying form
         buying_values = {"piece": request.form["piece"]}
 

@@ -56,6 +56,10 @@ def create_app():
     app.add_url_rule("/shopping-cart/next", view_func=transaction_view.transaction_next_page, methods=["GET", "POST"])
     app.add_url_rule("/shopping-cart/tp-<int:transaction_id>-<int:book_id>-<int:edition_number>", view_func=transaction_view.tp_delete_page)
 
+    # Address
+    app.add_url_rule("/addresses/add-new", view_func=address_view.add_address, methods=["GET", "POST"])
+    app.add_url_rule("/addresses/<int:address_id>/edit", view_func=address_view.address_edit_page, methods=["GET", "POST"])
+
     app.add_url_rule("/customers", view_func=customer_view.customers_page)
     app.add_url_rule("/addresses", view_func=address_view.addresses_page)
     app.add_url_rule("/authors", view_func=author_view.authors_page)

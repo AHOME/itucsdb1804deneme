@@ -109,7 +109,7 @@ class Control:
             db = current_app.config["db"]
 
             # Invalid input control
-            if db.customer_address.get_row(where_columns=["CUSTOMER_ID", "ADDRESS_ID"], where_values=[transaction.customer_id, values["address_id"]]):
+            if not db.customer_address.get_row(where_columns=["CUSTOMER_ID", "ADDRESS_ID"], where_values=[transaction.customer_id, values["address_id"]]):
                 err_message = "This customer doesn't have this address."
             elif len(values["payment_type"]) > 30:
                 err_message = "Payment type cannot be more than 30 character"

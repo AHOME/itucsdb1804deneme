@@ -41,7 +41,8 @@ def transaction_next_page():
 
         # Decrease the order number of products
         for tp in db.transaction_product.get_table(where_columns=["TRANSACTION_ID"], where_values=[transaction.transaction_id]):
-            db.product.update_price(book_id=tp.book_id, edition_number=tp.edition_number, new_remaining=db.product.get_row(tp.book_id, tp.edition_number).remaining - tp.piece)
+            product = db.product.get_row(tp.book_id, tp.edition_number)
+            db.product.update_piece_and_remainig(book_id=tp.book_id, edition_number=tp.edition_number, new_remaining=product.remaining - tp.piece, new_sold=product.number_of_sells + tp.piece)
 
         db.transaction.update(update_columns=["ADDRESS_ID", "TRANSACTION_TIME", "PAYMENT_TYPE", "TRANSACTION_EXPLANATION", "IS_COMPLETED"], new_values=[values['address_id'], 'CURRENT_TIMESTAMP', values['payment_type'], values['transaction_explanation'], True], where_columns=["TRANSACTION_ID"], where_values=[transaction.transaction_id])
         db.transaction.add_empty(current_user.id)

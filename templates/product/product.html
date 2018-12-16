@@ -85,6 +85,7 @@
     </div>
   </div>
   <div class="row" style="text-align: center;">
+    {% if product.is_active and current_user.is_authenticated %}
     {% if err_message %}
     <div class="alert alert-danger" role="alert">
       {{ err_message }}
@@ -97,8 +98,16 @@
         <input type="number" class="form-control" id="piece" name="piece" placeholder="Piece" required="required" value="1" min="1">
       </div>
       <button type="submit" class="btn btn-success my-1">Add to Cart</button>
-
     </form>
+    {% elif not product.is_active %}
+    <div class="alert alert-warning" role="alert">
+      There is no sale of this product.
+    </div>
+    {% elif not current_user.is_authenticated %}
+    <div class="alert alert-warning" role="alert">
+      Please <a href="{{ url_for('login_page') }}">Login</a>
+    </div>
+    {% endif %}
   </div>
 </div>
 

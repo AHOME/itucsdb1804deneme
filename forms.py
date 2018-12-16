@@ -27,3 +27,17 @@ class SignUpForm(PersonForm):
     c_email = StringField("E-mail", validators=[Email("You must provide a valid mail address"), Length(3, 50, "Email can not be longer than %(max)d character")], id='customer_email')
     c_password = PasswordField("Password", validators=[InputRequired("Please enter your password"), Length(6, 20, "Password length must between %(min)d and %(max)d character")], id='customer_password')
     c_phone = StringField("Customer phone", validators=[InputRequired("Please enter your phone number"), Length(8, 10, "Phone number can not be longer than %(max)d length")], id='customer_phone')
+
+
+class AddressForm(FlaskForm):
+    address_name = StringField("Address name", validators=[InputRequired("Please enter address' name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='address_name')
+    country = StringField("Country", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='country')
+    city = StringField("City", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='city')
+    district = StringField("District", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='district')
+    neighborhood = StringField("Neighborhood", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='neighborhood')
+    avenue = StringField("Avenue", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='avenue')
+    street = StringField("Street", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='street')
+    addr_num = StringField("Number", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='addr_num')
+    zipcode = StringField("Zipcode", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='zipcode')
+    explanation = TextAreaField("Explanation", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='explanation')
+    submit = SubmitField("Add Address")

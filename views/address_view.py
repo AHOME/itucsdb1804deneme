@@ -1,6 +1,53 @@
-from flask import current_app, render_template
+from flask import current_app, render_template, flash, request, url_for, redirect
+from forms import AddressForm
+
 
 def addresses_page():
     db = current_app.config["db"]
     addresses = db.address.get_table()
-    return render_template("addresses.html", addresses=addresses)
+    return render_template("address/addresses.html", addresses=addresses)
+
+
+
+def address_take_info_from_form(form):
+    return [form.data["address_name"], form.data["country"], form.data["city"], form.data["district"], form.data["neighborhood"], form.data["avenue"], form.data["street"], form.data["addr_num"], form.data["zipcode"], form.data["explanation"]]
+
+
+
+def add_address():
+    db = current_app.config["db"]
+    form = AddressForm()
+    if form.validate_on_submit():
+        values = address_take_info_from_form(form)
+
+        db.address.add(*values)
+        
+        flash("Address is added successfully", "success")
+        next_page = request.args.get("next", url_for("home_page"))
+        return redirect(next_page)
+
+    return render_template("address/address_add.html", form=form)
+
+
+
+def address_edit_page(address_id):
+    db = current_app.config["db"]
+    form = AddressForm()
+    address_obj = db.address.get_row("*", "ADDRESS_ID", address_id)
+    if form.validate_on_submit():
+        values = address_take_info_from_form(form)
+        db.person.update(["ADDRESS_NAME", "COUNTRY", "CITY", "DISTRICT", "NEIGHBORHOOD", "AVENUE", "STREET", "ADDR_NUMBER", "ZIPCODE", "EXPLANATION"], values, "ADDRESS_ID", address_obj.address_id)
+
+        flash("Address is updated successfully", "success")
+        next_page = request.args.get("next", url_for("home_page"))
+        return redirect(next_page)
+    
+    return render_template("address/address_edit.html", form=form, address=address_obj)
+
+
+
+
+def address_delete_page(address_id):
+    db = current_app.config["db"]
+    db.address.delete(address_id)
+    return redirect(url_for("addresses_page"))

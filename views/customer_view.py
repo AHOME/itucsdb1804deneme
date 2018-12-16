@@ -6,7 +6,7 @@ from forms import SignUpForm
 def customers_page():
     db = current_app.config["db"]
     customers = db.customer.get_table()
-    return render_template("customers.html", customers=customers)
+    return render_template("customer/customers.html", customers=customers)
 
 
 def author_take_info_from_form(form):

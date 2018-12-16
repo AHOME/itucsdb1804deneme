@@ -5,8 +5,14 @@ from forms import AuthorForm
 
 def authors_page():
     db = current_app.config["db"]
+
+    author_list = []
+
     authors = db.author.get_table()
-    return render_template("author/authors.html", authors=authors)
+    for author in authors:
+        person = db.person.get_row("*", ["PERSON_ID"], [author.person_id])
+        author_list.append((author, person), )
+    return render_template("author/authors.html", authors=author_list)
 
 
 def author_take_info_from_form(form):

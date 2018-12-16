@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField, DateField, TextAreaField
-from wtforms.validators import InputRequired, Length, Email, EqualTo, Optional
+from wtforms.validators import InputRequired, Length, Email, Optional
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired("Please enter your username"), Length(5, 30)], id='username')
@@ -27,6 +27,7 @@ class SignUpForm(PersonForm):
     c_email = StringField("E-mail", validators=[Email("You must provide a valid mail address"), Length(3, 50, "Email can not be longer than %(max)d character")], id='customer_email')
     c_password = PasswordField("Password", validators=[InputRequired("Please enter your password"), Length(6, 20, "Password length must between %(min)d and %(max)d character")], id='customer_password')
     c_phone = StringField("Customer phone", validators=[InputRequired("Please enter your phone number"), Length(8, 10, "Phone number can not be longer than %(max)d length")], id='customer_phone')
+    submit = SubmitField("Sign up")
 
 
 class AddressForm(FlaskForm):

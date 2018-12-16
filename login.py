@@ -5,7 +5,7 @@ import sys
 from flask import flash, current_app
 
 
-def sign_up(username, password, email, name, surname, phone, dob, gender, nationality=""):
+def sign_up(username, password, email, name, surname, phone, dob, gender, nationality):
     db = current_app.config["db"]
     pass_hash = hasher.hash(password)
     print(pass_hash)

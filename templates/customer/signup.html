@@ -4,25 +4,36 @@
 <div class="container signup-form">
 	<form class="form-signup" action="" method="post" name="signup">
 		<h2 class="form-signup-heading">Sign Up</h2>
-		<label for="inputUsername" class="sr-only">User Name</label>
-		<input type="text" id="inputUsername" name="inputUsername" class="form-control" placeholder="User Name" required autofocus>
-		<label for="inputPassword" class="sr-only">Password</label>
-		<input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Password" required>
-		<label for="inputEmail" class="sr-only">E-Mail</label>
-		<input type="email" id="inputEmail" name="inputEmail" class="form-control" placeholder="E-Mail" required>
-		<label for="inputPhone" class="sr-only">Phone</label>
-		<input type="number" id="inputPhone" name="inputPhone" class="form-control" placeholder="Phone" required maxlength="10">
-		<label for="inputName" class="sr-only">Name</label>
-		<input type="text" id="inputName" name="inputName" class="form-control" placeholder="Name" required>
-		<label for="inputSurname" class="sr-only">Surname</label>
-		<input type="text" id="inputSurname" name="inputSurname" class="form-control" placeholder="Surname" required>
-		<label for="inputDOB" class="sr-only">Date of Birth</label>
-		<input type="date" id="inputDOB" name="inputDOB" class="form-control" placeholder="Date of Birth" required>
-		<input type="radio" name="inputGender" value="M" checked> Male<br>
-		<input type="radio" name="inputGender" value="F"> Female<br>
-		<input type="radio" name="inputGender" value="O"> Other
-
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+		{{ form.c_username(required=True, autofocus=True,
+            class='form-control',
+            placeholder='Username') }}
+		{{ form.c_password(required=True,
+			class='form-control',
+			placeholder='Password') }}
+		{{ form.c_email(required=True,
+			class='form-control',
+			placeholder='E-Mail') }}
+		{{ form.c_phone(required=True,
+			class='form-control',
+			placeholder='Phone') }}
+		{{ form.p_name(required=True,
+			class='form-control',
+			placeholder='Name') }}
+		{{ form.p_surname(required=True,
+			class='form-control',
+			placeholder='Surname') }}
+		{{ form.p_gender(required=True,
+			class='form-control',
+			placeholder='Gender') }}
+		{{ form.p_dob(required=True,
+			class='form-control',
+			placeholder='Date of Birth') }}
+		{{ form.p_nationality(required=True,
+			class='form-control',
+			placeholder='Nationality') }}
+		{{ form.submit(class='btn btn-lg btn-primary btn-block',
+			placeholder='Sign Up') }}
+		<!--<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>-->
 	</form>
 </div>
 {% endblock %}

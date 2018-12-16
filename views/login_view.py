@@ -1,7 +1,7 @@
 from flask import current_app, render_template, request, redirect, url_for, session, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from passlib.hash import pbkdf2_sha256 as hasher
-from forms import LoginForm
+from forms import LoginForm, SignUpForm
 from login import sign_up
 
 def login_page():
@@ -30,18 +30,21 @@ def logout_page():
 
 
 def signup_page():
-    if request.method == "GET":
-        return render_template("customer/signup.html")
-    else:
-        u_username = request.form["inputUsername"]
-        u_password = request.form["inputPassword"]
-        u_email = request.form["inputEmail"]
-        u_name = request.form["inputName"]
-        u_surname = request.form["inputSurname"]
-        u_phone = request.form["inputPhone"]
-        u_DOB = request.form["inputDOB"]
-        u_gender = request.form["inputGender"]
+    form = SignUpForm()
 
-        sign_up(u_username, u_password, u_email, u_name, u_surname, u_phone, u_DOB, u_gender)
+    if form.validate_on_submit():
+        u_username = form.data["c_username"]
+        u_password = form.data["c_password"]
+        u_email = form.data["c_email"]
+        u_phone = form.data["c_phone"]
+        u_name = form.data["p_name"]
+        u_surname = form.data["p_surname"]
+        u_DOB = form.data["p_dob"]
+        u_gender = form.data["p_gender"]
+        u_nationality = form.data["p_nationality"]
+
+        sign_up(u_username, u_password, u_email, u_name, u_surname, u_phone, u_DOB, u_gender, u_nationality)
         flash("You have registered successfully", "success")
         return redirect(url_for("home_page"))
+
+    return render_template("customer/signup.html", form=form)

@@ -38,7 +38,7 @@ def address_edit_page(address_id):
     address_obj = db.address.get_row("*", "ADDRESS_ID", address_id)
     if form.validate_on_submit():
         values = address_take_info_from_form(form)
-        db.person.update(["ADDRESS_NAME", "COUNTRY", "CITY", "DISTRICT", "NEIGHBORHOOD", "AVENUE", "STREET", "ADDR_NUMBER", "ZIPCODE", "EXPLANATION"], values, "ADDRESS_ID", address_obj.address_id)
+        db.address.update(["ADDRESS_NAME", "COUNTRY", "CITY", "DISTRICT", "NEIGHBORHOOD", "AVENUE", "STREET", "ADDR_NUMBER", "ZIPCODE", "EXPLANATION"], values, "ADDRESS_ID", address_obj.address_id)
 
         flash("Address is updated successfully", "success")
         next_page = request.args.get("next", url_for("home_page"))

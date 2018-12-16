@@ -43,7 +43,7 @@
     </div>
     <div class="form-group">
       <label for="explanation">Explanation</label>
-      {{ form.explanation(class='form-control', placeholder='Explanation', required=True, value=address.explanation) }}
+      <textarea class="form-control" name="explanation" id="explanation" rows="3" required="">{{ address.explanation }}</textarea>
     </div>
     <button class="btn btn-primary btn-block" type="submit">Save</button>
   </form>

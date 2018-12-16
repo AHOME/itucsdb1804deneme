@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField, DateField, TextAreaField
+from wtforms import SelectField, StringField, PasswordField, SubmitField, BooleanField, TextAreaField
 from wtforms.validators import InputRequired, Length, Email, Optional
+from wtforms.fields.html5 import DateField
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[InputRequired("Please enter your username"), Length(5, 30)], id='username')
@@ -12,7 +13,7 @@ class LoginForm(FlaskForm):
 class PersonForm(FlaskForm):
     p_name = StringField("Person name", validators=[InputRequired("Please enter author's name"), Length(1, 30, "Name can not be longer than %(max)d character")], id='person_name')
     p_surname = StringField("Person surname", validators=[InputRequired("Please enter author's surname"), Length(1, 30, "Surname can not be longer than %(max)d character")], id='person_surname')
-    p_gender = SelectField("Person gender", choices=[('F', 'Female'), ('M', 'Male'), ('O', 'Not specified')], validators=[InputRequired("A gender must be provided")], id='person_gender')
+    p_gender = SelectField("Person gender", default="O", choices=[('F', 'Female'), ('M', 'Male'), ('O', 'Not specified')], validators=[InputRequired("A gender must be provided")], id='person_gender')
     p_dob = DateField("Person birth of date", validators=[Optional()], id='person_dob')
     p_nationality = StringField("Person nationality", validators=[Optional(), Length(1, 50, "Nationality length should be between %(min)d and %(max)d character")], id='person_nationality')
 
@@ -40,5 +41,5 @@ class AddressForm(FlaskForm):
     street = StringField("Street", validators=[InputRequired("Please enter street"), Length(1, 30, "Street can not be longer than %(max)d character")], id='street')
     addr_num = StringField("Number", validators=[InputRequired("Please enter number"), Length(1, 10, "Address number can not be longer than %(max)d character")], id='addr_num')
     zipcode = StringField("Zipcode", validators=[InputRequired("Please enter zipcode"), Length(1, 5, "Zipcode can not be longer than %(max)d character")], id='zipcode')
-    explanation = TextAreaField("Explanation", validators=[Length(0, 500, "Explanation can not be longer than %(max)d character")], id='explanation')
+#    explanation = TextAreaField("Explanation", validators=[Optional(), Length(1, 500, "Explanation can not be longer than %(max)d character")], id='explanation')
     submit = SubmitField("Add Address")

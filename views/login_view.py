@@ -1,7 +1,7 @@
 from flask import current_app, render_template, request, redirect, url_for, session, flash
-from forms import LoginForm
-from passlib.hash import pbkdf2_sha256 as hasher
 from flask_login import login_user, logout_user, login_required, current_user
+from passlib.hash import pbkdf2_sha256 as hasher
+from forms import LoginForm
 from login import sign_up
 
 def login_page():

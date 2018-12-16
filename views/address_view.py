@@ -1,5 +1,6 @@
 from flask import current_app, render_template, flash, request, url_for, redirect
 from forms import AddressForm
+from tables import AddressObj
 
 
 def addresses_page():
@@ -17,6 +18,7 @@ def address_take_info_from_form(form):
 def add_address():
     db = current_app.config["db"]
     form = AddressForm()
+    empty_address = AddressObj("", "", "", "", "", "", "", "", "", "", "")
     if form.validate_on_submit():
         values = address_take_info_from_form(form)
 
@@ -26,7 +28,7 @@ def add_address():
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
 
-    return render_template("address/address_add.html", form=form)
+    return render_template("address/address_form.html", form=form, address=empty_address)
 
 
 
@@ -42,7 +44,7 @@ def address_edit_page(address_id):
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
     
-    return render_template("address/address_edit.html", form=form, address=address_obj)
+    return render_template("address/address_form.html", form=form, address=address_obj)
 
 
 

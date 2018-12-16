@@ -1,32 +1,32 @@
 {% extends "layout.html" %}
-{% block title %}Customers list{% endblock %}
+{% block title %}Persons list{% endblock %}
 {% block content %}
-{% if customers %}
+{% if persons %}
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h2 class="title">Customers page</h2>
+      <h2 class="title">Persons page</h2>
       <div class="table-responsive">
         <table id="mytable" class="table table-bordred table-striped">
           <thead>
-            <th>Customer_ID</th>
-            <th>Person_ID</th>
-            <th>Username</th>
-            <th>E-mail</th>
-            <th>Phone</th>
-            <th>Is_Active?</th>
+            <th>Person ID</th>
+            <th>Person Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Nationality</th>
             <th>Edit</th>
             <th>Delete</th>
           </thead>
           <tbody>
-            {% for customer in customers %}
+            {% for person in persons %}
             <tr>
-              <td>{{ customer.id }}</td>
-              <td>{{ customer.person_id }}</td>
-              <td>{{ customer.username }}</td>
-              <td>{{ customer.email }}</td>
-              <td>{{ customer.phone }}</td>
-              <td>{{ customer.is_active }}</td>
+              <td>{{ person.person_id }}</td>
+              <td>{{ person.person_name }}</td>
+              <td>{{ person.person_surname }}</td>
+              <td>{{ person.gender }}</td>
+              <td>{{ person.date_of_birth }}</td>
+              <td>{{ person.nationality }}</td>
               <td><p title="Edit"><a href="#"><button class="btn btn-primary btn-xs" data-title="Edit"><span class="glyphicon glyphicon-pencil"></span></button></a></p></td>
               <td><p title="Delete"><a href="#"><button class="btn btn-danger btn-xs" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button></a></p></td>
             </tr>

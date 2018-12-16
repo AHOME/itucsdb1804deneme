@@ -16,9 +16,9 @@ class Comment(baseClass):
             cursor.execute(query, fill)
             cursor.close()
 
-    def update(self, comment):
+    def update(self, comment_id, comment):
         query = "UPDATE COMMENT SET CUSTOMER_ID = %s, BOOK_ID = %s, COMMENT_TITLE = %s, COMMENT_STATEMENT = %s, UPDATED_TIME = CURRENT_TIMESTAMP, RATING = %s WHERE COMMENT_ID = %s"
-        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.rating, comment.comment_id)
+        fill = (comment.customer_id, comment.book_id, comment.comment_title, comment.comment_statement, comment.rating, comment_id)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
@@ -49,14 +49,20 @@ class Comment(baseClass):
 
         return _comment
 
-    def get_table(self):
+    def get_table(self, book_id=None):
         comments = []
 
-        query = "SELECT * FROM COMMENT;"
+        query = "SELECT * FROM COMMENT"
+        if book_id:
+            query += " WHERE BOOK_ID = %s"
+            fill = (book_id,)
 
         with dbapi2.connect(self.url) as connection:
             cursor = connection.cursor()
-            cursor.execute(query)
+            if book_id:
+                cursor.execute(query, fill)
+            else:
+                cursor.execute(query)
             for comment in cursor:
                 comment_ = CommentObj(comment[1], comment[2], comment[3], comment[4], comment[7], added_time=comment[5], updated_time=comment[6], comment_id=comment[0])
                 comments.append(comment_)

@@ -1,5 +1,6 @@
 from flask_login import UserMixin
 
+
 class BookObj:
     def __init__(self, book_name, release_year, explanation, book_id=None):
         self.book_id = book_id
@@ -93,8 +94,8 @@ class CustomerAddressObj:
 # myilmaz
 class BookEditionObj:
     def __init__(self, book_id, edition_number, isbn, publisher, publish_year, number_of_pages, language):
-        self.book_id = book_id
-        self.edition_number = edition_number
+        self.book_id = str(book_id)
+        self.edition_number = str(edition_number)
         self.isbn = isbn
         self.publisher = publisher
         self.publish_year = publish_year
@@ -104,24 +105,26 @@ class BookEditionObj:
 
 # myilmaz
 class TransactionObj:
-    def __init__(self, customer_id, address_id, transaction_time, payment_type, explanation):
+    def __init__(self, transaction_id, customer_id, address_id, transaction_time, payment_type, explanation, is_completed):
+        self.transaction_id = transaction_id
         self.customer_id = customer_id
         self.address_id = address_id
         self.transaction_time = transaction_time
         self.payment_type = payment_type
         self.explanation = explanation
+        self.is_completed = is_completed
 
 
 # myilmaz
 class ProductObj:
-    def __init__(self, book_id, edition_number, remaining, actual_price, number_of_sells, explanation, is_active, date_added=None):
+    def __init__(self, book_id, edition_number, remaining, actual_price, number_of_sells, product_explanation, is_active, date_added=None):
         self.book_id = book_id
         self.edition_number = edition_number
         self.remaining = remaining
         self.actual_price = actual_price
         self.number_of_sells = number_of_sells
         self.date_added = date_added
-        self.explanation = explanation
+        self.product_explanation = product_explanation
         self.is_active = is_active
 
 

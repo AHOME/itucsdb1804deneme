@@ -2,7 +2,7 @@ from flask import current_app, render_template, request, redirect, url_for, sess
 from forms import LoginForm
 from passlib.hash import pbkdf2_sha256 as hasher
 from flask_login import login_user, logout_user, login_required, current_user
-from login import check_password, sign_up
+from login import sign_up
 
 def login_page():
     form = LoginForm()
@@ -12,14 +12,15 @@ def login_page():
         user = db.customer.get_row("*", "USERNAME", username)
         if user is not None:
             password = form.data["password"]
+            remember = form.data["remember_me"]
             if hasher.verify(password, user.password_hash):
-                login_user(user)
+                login_user(user, remember)
                 flash("You have logged in successfully", "success")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
 
         flash("Invalid credentials.", "danger")
-    return render_template("login.html", form=form)
+    return render_template("customer/login.html", form=form)
 
 
 def logout_page():
@@ -30,7 +31,7 @@ def logout_page():
 
 def signup_page():
     if request.method == "GET":
-        return render_template("signup.html")
+        return render_template("customer/signup.html")
     else:
         u_username = request.form["inputUsername"]
         u_password = request.form["inputPassword"]

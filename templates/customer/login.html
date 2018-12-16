@@ -34,9 +34,8 @@
       </div>
 
       <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
+          {{ form.remember_me(required=False, placeholder='Remember Me') }}
+          <label for="remember_me">Remember Me</label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
       <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>

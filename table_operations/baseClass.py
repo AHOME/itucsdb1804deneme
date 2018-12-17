@@ -116,4 +116,4 @@ class baseClass:
                 except dbapi2.Error as err:
                     print("Error: ", err)
 
-        return None if result.isempty() else result
+        return None if not result else result

@@ -21,20 +21,20 @@
       </div>
 
       <div class="form-label-group">
-          {{ form.username(required=True, autofocus=True,
+          {{ render_field(form.username, required=True, autofocus=True,
             class='form-control',
             placeholder='Username') }}
           <label for="username">Username</label>
       </div>
 
       <div class="form-label-group">
-        {{ form.password(required=True, class='form-control',
+          {{ render_field(form.password, required=True, class='form-control',
 			    placeholder='Password') }}
         <label for="password">Password</label>
       </div>
 
       <div class="checkbox mb-3">
-          {{ form.remember_me(required=False, placeholder='Remember Me') }}
+          {{ render_field(form.remember_me, required=False, placeholder='Remember Me') }}
           <label for="remember_me">Remember Me</label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

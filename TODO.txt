@@ -4,7 +4,7 @@ TODO ADD : MY - Ürünler ile ilgili sayfaların bağlantılarını menüye ve s
 TODO ADD : MY - Ürün silme bağlantıları
 TODO ADD : MY - Ürünler is active -> sayfa var-yok / satış yok-var
 TODO ADD : MY -
-TODO ADD : MY - Category ve yazar sayfaları oluştur, o yazarın/kategorinin kitaplarını göster
+TODO ADD : MY - Kategoriler
 TODO ADD : MY - Verilen tüm siparişlerin sayfası
 
 TODO ADD : AYK - Üye olunurken db'ye Transaction/Sepet ekleme

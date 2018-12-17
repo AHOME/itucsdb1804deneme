@@ -22,26 +22,24 @@
       </div>
 
       <div class="form-label-group">
-          {{ render_field(form.username, required=True, autofocus=True,
+          {{ form.username(required=True, autofocus=True,
             class='form-control',
             placeholder='Username') }}
           <label for="username">Username</label>
       </div>
 
       <div class="form-label-group">
-          {{ render_field(form.password, required=True, class='form-control',
+          {{ form.password(required=True, class='form-control',
 			    placeholder='Password') }}
         <label for="password">Password</label>
       </div>
 
       <div class="checkbox mb-3">
-          {{ render_field(form.remember_me, required=False, placeholder='Remember Me') }}
+          {{ form.remember_me(required=False, placeholder='Remember Me') }}
           <label for="remember_me">Remember Me</label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>-->
-      <p class="mt-5 mb-3 text-muted text-center">&copy; BeeBook-2018</p>
+      <p class="mt-5 mb-3 text-muted text-center" href="{{ url_for('home_page') }}">&copy; BeeBook-2018</p>
     </form>
   </body>
 

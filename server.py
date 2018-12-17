@@ -65,20 +65,23 @@ def create_app():
     app.add_url_rule("/addresses", view_func=address_view.addresses_page)
     app.add_url_rule("/addresses/add-new", view_func=address_view.add_address, methods=["GET", "POST"])
     app.add_url_rule("/addresses/<int:address_id>/edit", view_func=address_view.address_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/addresses/<int:address_id>/delete", view_func=address_view.address_delete_page, methods=["GET", "POST"])
 
     # Author
     app.add_url_rule("/authors", view_func=author_view.authors_page)
     app.add_url_rule("/authors/add-new", view_func=author_view.add_author, methods=["GET", "POST"])
     app.add_url_rule("/authors/<int:author_id>/edit", view_func=author_view.author_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/authors/<int:author_id>/delete", view_func=author_view.author_delete_page, methods=["GET", "POST"])
     app.add_url_rule("/authors/<int:author_id>/books", view_func=author_view.books_by_author_page, methods=["GET", "POST"])
 
     # Category
-    app.add_url_rule("/categories", view_func=category_view.categories)
+    app.add_url_rule("/categories", view_func=category_view.categories_page)
     app.add_url_rule("/categories/<int:category_id>/books", view_func=category_view.books_by_category_page, methods=["GET", "POST"])
 
     # Customer
     app.add_url_rule("/customers", view_func=customer_view.customers_page)
     app.add_url_rule("/customers/<int:customer_id>/edit", view_func=customer_view.edit_customer_page, methods=["GET", "POST"])
+    app.add_url_rule("/customers/<int:customer_id>/delete", view_func=customer_view.delete_customer_page, methods=["GET", "POST"])
 
     return app
 
@@ -91,7 +94,13 @@ def unauthorized_access_page(err):
 
 @app.errorhandler(403)
 def access_denied_page(err):
-    return render_template("403.html")
+    return render_template("error/403.html")
+
+@app.errorhandler(404)
+def page_not_found(err):
+    return render_template("error/404.html")
+
+
 
 if __name__ == "__main__":
     port = app.config.get("PORT", 5000)

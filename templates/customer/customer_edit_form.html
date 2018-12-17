@@ -5,8 +5,8 @@
   <h2 class="title">Customer Editing</h2>
 	<form class="form-signup" action="" method="post" name="signup">
 		{{ render_field(form.c_username, required=True, autofocus=True,
-      class='form-control',
-      placeholder='Username', value=customer.username) }}
+      		class='form-control',
+      		placeholder='Username', value=customer.username) }}
 		{{ render_field(form.c_password, required=True,
 			class='form-control',
 			placeholder='Password') }}

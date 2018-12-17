@@ -1,6 +1,6 @@
+import psycopg2 as dbapi2
 from table_operations.baseClass import baseClass
 from tables import BookObj
-import psycopg2 as dbapi2
 
 
 class Book(baseClass):
@@ -60,18 +60,3 @@ class Book(baseClass):
 
     def get_table(self, select_columns="*", where_columns=None, where_values=None):
         return self.getTableGeneric(select_columns, where_columns, where_values)
-    #
-    # def get_table(self):
-    #     books = []
-    #
-    #     query = "SELECT * FROM BOOK;"
-    #
-    #     with dbapi2.connect(self.url) as connection:
-    #         cursor = connection.cursor()
-    #         cursor.execute(query)
-    #         for book in cursor:
-    #             book_ = BookObj(book[0], book[1], book[2], book[3])
-    #             books.append(book_)
-    #         cursor.close()
-    #
-    #     return books

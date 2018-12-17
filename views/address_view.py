@@ -1,4 +1,5 @@
 from flask import current_app, render_template, flash, request, url_for, redirect
+from flask_login import current_user
 from forms import AddressForm
 from tables import AddressObj
 
@@ -22,8 +23,9 @@ def add_address():
     if form.validate_on_submit():
         values = address_take_info_from_form(form)
 
-        db.address.add(*values)
-        
+        address_id = db.address.add(*values)
+        db.customer_address.add(current_user.id ,address_id)
+
         flash("Address is added successfully", "success")
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
@@ -51,5 +53,6 @@ def address_edit_page(address_id):
 
 def address_delete_page(address_id):
     db = current_app.config["db"]
+    db.customer_address.delete(address_id)
     db.address.delete(address_id)
     return redirect(url_for("addresses_page"))

@@ -80,7 +80,7 @@ app = create_app()
 
 @app.errorhandler(401)
 def unauthorized_access_page(err):
-    return render_template("401.html")
+    return render_template("error/401.html")
 
 if __name__ == "__main__":
     port = app.config.get("PORT", 5000)

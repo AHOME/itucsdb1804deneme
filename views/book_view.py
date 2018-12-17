@@ -12,7 +12,7 @@ def books_page():
         books = []
         for book in db.book.get_table():
             books.append((book, take_author_names_by_book(book.book_id), take_categories_by_book(book.book_id)))
-        return render_template("book/books.html", books=books)
+        return render_template("book/books.html", books=books, title="All books")
     else:
         form_book_keys = request.form.getlist("book_keys")
         for form_book_key in form_book_keys:

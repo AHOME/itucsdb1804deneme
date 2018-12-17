@@ -4,7 +4,7 @@ from table_operations.control import Control
 from tables import ProductObj, TransactionProductObj
 from views.book_view import take_categories_by_book, take_author_names_by_book
 
-@login_required
+
 def products_page():
     db = current_app.config["db"]
     if request.method == "GET":

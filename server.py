@@ -80,7 +80,7 @@ app = create_app()
 
 @app.errorhandler(401)
 def unauthorized_access_page(err):
-    return render_template("401.html")
+    return render_template("error/401.html")
 
 @app.errorhandler(403)
 def access_denied_page(err):

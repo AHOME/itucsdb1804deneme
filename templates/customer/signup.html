@@ -2,36 +2,37 @@
 {% block title %}Sign Up Page{% endblock %}
 {% block content %}
 <div class="container signup-form">
+	{% from "_formhelpers.html" import render_field %}
 	<form class="form-signup" action="" method="post" name="signup">
 		<h2 class="form-signup-heading">Sign Up</h2>
-		{{ form.c_username(required=True, autofocus=True,
+		{{ render_field, form.c_username, required=True, autofocus=True,
             class='form-control',
             placeholder='Username') }}
-		{{ form.c_password(required=True,
+		{{ render_field, form.c_password, required=True,
 			class='form-control',
 			placeholder='Password') }}
-		{{ form.c_email(required=True,
+		{{ render_field, form.c_email, required=True,
 			class='form-control',
 			placeholder='E-Mail') }}
-		{{ form.c_phone(required=True,
+		{{ render_field, form.c_phone, required=True,
 			class='form-control',
 			placeholder='Phone') }}
-		{{ form.p_name(required=True,
+		{{ render_field, form.p_name, required=True,
 			class='form-control',
 			placeholder='Name') }}
-		{{ form.p_surname(required=True,
+		{{ render_field, form.p_surname, required=True,
 			class='form-control',
 			placeholder='Surname') }}
-		{{ form.p_gender(required=True,
+		{{ render_field, form.p_gender, required=True,
 			class='form-control',
 			placeholder='Gender') }}
-		{{ form.p_dob(required=True,
+		{{ render_field, form.p_dob, required=True,
 			class='form-control',
 			placeholder='Date of Birth') }}
-		{{ form.p_nationality(required=True,
+		{{ render_field, form.p_nationality, required=True,
 			class='form-control',
 			placeholder='Nationality') }}
-		<!--{{ form.submit(class='btn btn-lg btn-primary btn-block',
+		<!--{{ render_field, form.submit, class='btn btn-lg btn-primary btn-block',
 			placeholder='Sign Up') }}-->
 		<button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
 	</form>

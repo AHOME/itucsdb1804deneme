@@ -129,5 +129,7 @@ def product_delete_page(book_id, edition_number):
         abort(401)
 
     db = current_app.config["db"]
-    db.product.delete(book_id, edition_number)
+    product = db.product.get_row(book_id, edition_number)
+    product.is_active = False
+    db.product.update(book_id, edition_number, product)
     return redirect(url_for("book_page", book_key=book_id))

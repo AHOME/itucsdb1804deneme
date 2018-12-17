@@ -58,8 +58,9 @@ def book_page(book_key):
         return redirect(url_for("book_page", book_key=book_key))
 
 
+@login_required
 def book_add_page():
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]
@@ -92,8 +93,9 @@ def book_add_page():
         return redirect(url_for("books_page"))
 
 
+@login_required
 def book_edit_page(book_key):
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]
@@ -138,8 +140,9 @@ def book_edit_page(book_key):
         return redirect(url_for("book_page", book_key=book_key))
 
 
+@login_required
 def book_delete_page(book_key):
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]

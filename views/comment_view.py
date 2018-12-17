@@ -8,10 +8,8 @@ def comments_page():
     return render_template("comments.html", comments=comments)
 
 
+@login_required
 def comment_edit_page(comment_id):
-    if not current_user.is_authenticated:
-        abort(401)
-
     db = current_app.config["db"]
 
     # Take comment information and if there is no comment with comment id, abort 404 page
@@ -42,10 +40,8 @@ def comment_edit_page(comment_id):
         return redirect(url_for("book_page", book_key=comment.book_id))
 
 
+@login_required
 def comment_delete_page(comment_id):
-    if not current_user.is_authenticated:
-        abort(401)
-
     db = current_app.config["db"]
 
     # Take comment information and if there is no comment with comment id, abort 404 page

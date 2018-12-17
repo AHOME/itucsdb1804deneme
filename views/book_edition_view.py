@@ -8,8 +8,9 @@ def book_edition_page(book_id, edition_number):
     return redirect(url_for('product_page', book_id=book_id, edition_number=edition_number))
 
 
+@login_required
 def book_edition_add_page():
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]
@@ -29,8 +30,9 @@ def book_edition_add_page():
         return redirect(url_for("book_edition_page", book_id=book_id, edition_number=edition_number))
 
 
+@login_required
 def book_edition_edit_page(book_id, edition_number):
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]
@@ -54,8 +56,9 @@ def book_edition_edit_page(book_id, edition_number):
         return redirect(url_for("book_edition_page", book_id=book_id, edition_number=edition_number))
 
 
+@login_required
 def book_edition_delete_page(book_id, edition_number):
-    if not current_user.is_authenticated or not current_user.is_admin:
+    if not current_user.is_admin:
         abort(401)
 
     db = current_app.config["db"]

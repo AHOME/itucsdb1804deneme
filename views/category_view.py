@@ -16,3 +16,9 @@ def books_by_category_page(category_id):
         for form_book_key in form_book_keys:
             db.book.delete(form_book_key)
         return redirect(url_for("books_page"))
+
+
+def categories():
+    db = current_app.config["db"]
+    categories = db.category.get_table()
+    return render_template("category/categories.html", categories=categories)

@@ -83,7 +83,7 @@ def book_add_page():
         if err_message:
             return render_template("book/book_form.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message, authors=authors, categories=categories)
 
-        book = BookObj(values["book_name"], values["released_year"], values["explanation"])
+        book = BookObj(None, values["book_name"], values["released_year"], values["explanation"])
 
         book_id = db.book.add_book(book)
         for author_id in values["selected_author_ids"]:
@@ -129,7 +129,7 @@ def book_edit_page(book_key):
         if err_message:
             return render_template("book/book_form.html", min_year=1887, max_year=datetime.datetime.now().year, values=values, title="Book adding", err_message=err_message, authors=authors, categories=categories)
 
-        book = BookObj(values["book_name"], values["released_year"], values["explanation"])
+        book = BookObj(None, values["book_name"], values["released_year"], values["explanation"])
         book_id = db.book.update(book_key, book)
         db.book_author.delete(where_columns="BOOK_ID", where_values=[book_id])
         for author_id in values["selected_author_ids"]:

@@ -17,6 +17,7 @@
     {% endif %}
     <script src="{{ url_for('static', filename='popup.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='mybooks.css') }}"/>
+    {% from "_formhelpers.html" import render_field %}
   </head>
 
   <body>

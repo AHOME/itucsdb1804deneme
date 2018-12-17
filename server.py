@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, abort
 from flask_login import LoginManager
 from database import Database
 from views import *
@@ -10,6 +10,10 @@ db = Database()
 @lm.user_loader
 def load_user(user_id):
     return db.customer.get_row("*", "CUSTOMER_ID", user_id)
+
+@lm.unauthorized_handler
+def unauthorized_access():
+    return abort(401)
 
 
 def create_app():

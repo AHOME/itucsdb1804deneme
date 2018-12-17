@@ -1,10 +1,10 @@
 from flask import current_app, render_template, abort, request, redirect, url_for
 from table_operations.control import Control
 from tables import ProductObj, TransactionProductObj
-from flask_login import current_user
+from flask_login import current_user, login_required
 from views.book_view import take_categories_by_book, take_author_names_by_book
 
-
+@login_required
 def products_page():
     db = current_app.config["db"]
     if request.method == "GET":

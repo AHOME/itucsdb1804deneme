@@ -70,6 +70,7 @@ def create_app():
     app.add_url_rule("/authors", view_func=author_view.authors_page)
     app.add_url_rule("/authors/add-new", view_func=author_view.add_author, methods=["GET", "POST"])
     app.add_url_rule("/authors/<int:author_id>/edit", view_func=author_view.author_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/authors/<int:author_id>/books", view_func=author_view.books_by_author_page, methods=["GET", "POST"])
 
     # Category
     app.add_url_rule("/categories/<int:category_id>/books", view_func=category_view.books_by_category_page, methods=["GET", "POST"])

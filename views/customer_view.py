@@ -28,7 +28,7 @@ def author_take_info_from_form(form):
 def edit_customer_page(customer_id):
     db = current_app.config["db"]
     form = SignUpForm()
-    customer_obj = db.author.get_row("*", "CUSTOMER_ID", customer_id)
+    customer_obj = db.customer.get_row("*", "CUSTOMER_ID", customer_id)
     person_obj = db.person.get_row("*", "PERSON_ID", customer_obj.person_id)
     if form.validate_on_submit():
         values = author_take_info_from_form(form)
@@ -39,8 +39,7 @@ def edit_customer_page(customer_id):
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
 
-
-    return render_template("customer/customer_edit.html", form=form, person=person_obj, customer=customer_obj)
+    return render_template("customer/customer_edit_form.html", form=form, person=person_obj, customer=customer_obj)
         
 
 

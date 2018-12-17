@@ -1,6 +1,7 @@
-import psycopg2 as dbapi2
 import os
 import sys
+import psycopg2 as dbapi2
+
 
 class baseClass:
 
@@ -13,10 +14,10 @@ class baseClass:
             sys.exit(1)
 
     def convertToList(self, in_object):
-        if type(in_object) is not list:
+        if not isinstance(in_object, list):
             if in_object is not None:
                 return [in_object]
-        
+
         return in_object
 
 
@@ -65,7 +66,7 @@ class baseClass:
         query = self.getTableFlex(select_columns, where_columns)
         fill = (*where_values, ) if where_columns is not None else None
 
-        result = self.execute(query, fill, True)        
+        result = self.execute(query, fill, True)
         if result is not None:
             for it in result:
                 results_list.append(self.cons(*it))
@@ -113,6 +114,6 @@ class baseClass:
                     if fetch_bool:
                         result = curs.fetchall()
                 except dbapi2.Error as err:
-                    print("Error: %s", err)
-        
-        return None if len(result) == 0 else result
+                    print("Error: ", err)
+
+        return None if result.isempty() else result

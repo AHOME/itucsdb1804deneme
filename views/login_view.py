@@ -1,5 +1,5 @@
-from flask import current_app, render_template, request, redirect, url_for, session, flash
-from flask_login import login_user, logout_user, login_required, current_user
+from flask import current_app, render_template, request, redirect, url_for, flash
+from flask_login import login_user, logout_user
 from passlib.hash import pbkdf2_sha256 as hasher
 from forms import LoginForm, SignUpForm
 from login import sign_up
@@ -18,6 +18,9 @@ def login_page():
                 flash("You have logged in successfully", "success")
                 next_page = request.args.get("next", url_for("home_page"))
                 return redirect(next_page)
+
+            flash("You have entered a wrong username or password.", 'danger')
+            return redirect(url_for("login_page"))
 
         flash("Invalid credentials.", "danger")
     return render_template("customer/login.html", form=form)
@@ -39,11 +42,11 @@ def signup_page():
         u_phone = form.data["c_phone"]
         u_name = form.data["p_name"]
         u_surname = form.data["p_surname"]
-        u_DOB = form.data["p_dob"]
+        u_dob = form.data["p_dob"]
         u_gender = form.data["p_gender"]
         u_nationality = form.data["p_nationality"]
 
-        sign_up(u_username, u_password, u_email, u_name, u_surname, u_phone, u_DOB, u_gender, u_nationality)
+        sign_up(u_username, u_password, u_email, u_name, u_surname, u_phone, u_dob, u_gender, u_nationality)
         flash("You have registered successfully", "success")
         return redirect(url_for("home_page"))
 

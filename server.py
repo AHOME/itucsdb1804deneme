@@ -82,6 +82,10 @@ app = create_app()
 def unauthorized_access_page(err):
     return render_template("401.html")
 
+@app.errorhandler(403)
+def access_denied_page(err):
+    return render_template("403.html")
+
 if __name__ == "__main__":
     port = app.config.get("PORT", 5000)
     app.run(host="0.0.0.0", port=port)

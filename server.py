@@ -75,7 +75,9 @@ def create_app():
     # Category
     app.add_url_rule("/categories/<int:category_id>/books", view_func=category_view.books_by_category_page, methods=["GET", "POST"])
 
+    # Customer
     app.add_url_rule("/customers", view_func=customer_view.customers_page)
+    app.add_url_rule("/customers/<int:customer_id>/edit", view_func=customer_view.edit_customer_page, methods=["GET", "POST"])
 
     return app
 

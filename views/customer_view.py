@@ -9,7 +9,7 @@ def customers_page():
     return render_template("customer/customers.html", customers=customers)
 
 
-def author_take_info_from_form(form):
+def customer_take_info_from_form(form):
     '''
     p_name = form.data["p_name"]
     p_surname = form.data["p_surname"]
@@ -31,7 +31,7 @@ def edit_customer_page(customer_id):
     customer_obj = db.customer.get_row("*", "CUSTOMER_ID", customer_id)
     person_obj = db.person.get_row("*", "PERSON_ID", customer_obj.person_id)
     if form.validate_on_submit():
-        values = author_take_info_from_form(form)
+        values = customer_take_info_from_form(form)
         db.person.update(["PERSON_NAME", "SURNAME", "GENDER", "DATE_OF_BIRTH", "NATIONALITY"], values[0], "PERSON_ID", person_obj.person_id)
         db.customer.update(["USERNAME", "EMAIL", "PASS_HASH", "PHONE"], values[1], "CUSTOMER_ID", customer_id)
 

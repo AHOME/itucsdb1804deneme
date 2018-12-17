@@ -24,7 +24,7 @@ def add_address():
         values = address_take_info_from_form(form)
 
         address_id = db.address.add(*values)
-        db.customer_address.add(current_user.id ,address_id)
+        db.customer_address.add(current_user.id, address_id)
 
         flash("Address is added successfully", "success")
         next_page = request.args.get("next", url_for("home_page"))
@@ -45,7 +45,7 @@ def address_edit_page(address_id):
         flash("Address is updated successfully", "success")
         next_page = request.args.get("next", url_for("home_page"))
         return redirect(next_page)
-    
+
     return render_template("address/address_form.html", form=form, address=address_obj)
 
 

@@ -11,7 +11,7 @@ def books_page():
     if request.method == "GET":
         books = []
         for book in db.book.get_table():
-            books.append((book, take_author_names_by_book(book.book_id), take_categories_by_book(book.book_id)))
+            books.append((book, take_author_ids_and_names_by_book(book.book_id), take_categories_by_book(book.book_id)))
         return render_template("book/books.html", books=books, title="All books")
     else:
         form_book_keys = request.form.getlist("book_keys")
@@ -31,7 +31,7 @@ def book_page(book_key):
 
     # Take editions, authors, and comments of this book
     editions = db.book_edition.get_rows_by_book(book_key)
-    author_names = take_author_names_by_book(book_key)
+    author_names = take_author_ids_and_names_by_book(book_key)
     comments = take_comments_with_and_by(book_id=book_key)
     categories = take_categories_by_book(book_key)
 
@@ -158,11 +158,11 @@ def take_categories_by_book(book_id):
     return categories
 
 
-def take_author_names_by_book(book_id):
+def take_author_ids_and_names_by_book(book_id):
     db = current_app.config["db"]
-    author_names = []
+    author_ids_and_names = []
     for book_author in db.book_author.get_table(where_columns="BOOK_ID", where_values=book_id):
         for author in db.author.get_table(where_columns="AUTHOR_ID", where_values=book_author.author_id):
             for person in db.person.get_table(where_columns="PERSON_ID", where_values=author.person_id):
-                author_names.append(person.person_name + " " + person.person_surname)
-    return author_names
+                author_ids_and_names.append((author.author_id, person.person_name + " " + person.person_surname))
+    return author_ids_and_names

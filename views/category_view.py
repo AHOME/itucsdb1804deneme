@@ -1,5 +1,5 @@
 from flask import current_app, render_template, request, redirect, url_for
-from views.book_view import take_author_names_by_book, take_categories_by_book
+from views.book_view import take_author_ids_and_names_by_book, take_categories_by_book
 
 
 def books_by_category_page(category_id):
@@ -9,7 +9,7 @@ def books_by_category_page(category_id):
         book_category_list = db.book_category.get_table(where_columns="CATEGORY_ID", where_values=category_id)
         books = []
         for book_category in book_category_list:
-            books.append((db.book.get_row(book_category.book_id), take_author_names_by_book(book_category.book_id), take_categories_by_book(book_category.book_id)))
+            books.append((db.book.get_row(book_category.book_id), take_author_ids_and_names_by_book(book_category.book_id), take_categories_by_book(book_category.book_id)))
         return render_template("book/books.html", books=books, title="Books in category of " + category.category_name)
     else:
         form_book_keys = request.form.getlist("book_keys")

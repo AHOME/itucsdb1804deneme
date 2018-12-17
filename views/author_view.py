@@ -1,7 +1,7 @@
 from flask import current_app, render_template, abort, request, redirect, url_for, flash
 from tables import AuthorObj, PersonObj
 from forms import AuthorForm
-from views.book_view import take_author_names_by_book, take_categories_by_book
+from views.book_view import take_author_ids_and_names_by_book, take_categories_by_book
 
 
 def authors_page():
@@ -79,7 +79,7 @@ def books_by_author_page(author_id):
         book_author_list = db.book_author.get_table(where_columns="AUTHOR_ID", where_values=author_id)
         books = []
         for book_author in book_author_list:
-            books.append((db.book.get_row(book_author.book_id), take_author_names_by_book(book_author.book_id), take_categories_by_book(book_author.book_id)))
+            books.append((db.book.get_row(book_author.book_id), take_author_ids_and_names_by_book(book_author.book_id), take_categories_by_book(book_author.book_id)))
         return render_template("book/books.html", books=books, title=person.person_name + " " + person.person_surname + "'s Books")
     else:
         form_book_keys = request.form.getlist("book_keys")

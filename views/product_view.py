@@ -2,7 +2,7 @@ from flask import current_app, render_template, abort, request, redirect, url_fo
 from flask_login import current_user, login_required
 from table_operations.control import Control
 from tables import ProductObj, TransactionProductObj
-from views.book_view import take_categories_by_book, take_author_names_by_book
+from views.book_view import take_categories_by_book, take_author_ids_and_names_by_book
 
 
 def products_page():
@@ -21,7 +21,7 @@ def product_page(book_id, edition_number):
     book = db.book.get_row(book_id)
     edition = db.book_edition.get_row(book_id, edition_number)
     product = db.product.get_row(book_id, edition_number)
-    author_names = take_author_names_by_book(book_id)
+    author_names = take_author_ids_and_names_by_book(book_id)
     categories = take_categories_by_book(book_id)
 
     # If there is not product, edition, or book with this book_key and edition_number, abort 404 page

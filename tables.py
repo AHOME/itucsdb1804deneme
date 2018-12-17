@@ -41,7 +41,7 @@ class CustomerObj(UserMixin):
         self.password_hash = password_hash
         self.phone = phone
         self.active = active
-        self.is_admin = True if self.id == 1 else False     # To make user with customer_id = 1 admin
+        self.is_admin = self.id == 1     # To make user with customer_id = 1 admin
 
 
 class AddressObj:

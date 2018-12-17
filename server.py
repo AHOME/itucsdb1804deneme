@@ -1,4 +1,4 @@
-from flask import Flask, abort
+from flask import Flask, abort, render_template
 from flask_login import LoginManager
 from database import Database
 from views import *
@@ -6,6 +6,7 @@ from views import *
 
 lm = LoginManager()
 db = Database()
+
 
 @lm.user_loader
 def load_user(user_id):
@@ -76,6 +77,10 @@ def create_app():
 
 
 app = create_app()
+
+@app.errorhandler(401)
+def unauthorized_access_page(err):
+    return render_template("401.html")
 
 if __name__ == "__main__":
     port = app.config.get("PORT", 5000)

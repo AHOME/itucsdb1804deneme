@@ -1,7 +1,54 @@
-h1.title {
-    color: #e9601a;
+.title {
+  color: #e9601a;
 }
 
 footer {
-    text-align: center;
+  text-align: center;
+  height: 100px;
+}
+
+.beebook-form {
+  max-width: 300px;
+}
+
+.beebook-width-325 {
+  max-width: 325px;
+}
+
+.obje-edit-form {
+  max-width: 500px;
+}
+
+.beebook-comment {
+  background: #EFEFEF;
+}
+
+.beebook-comments {
+}
+
+.beebook-table-info td{
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+
+.beebook-title-table {
+  text-align: center;
+}
+
+.beebook-obje {
+  border-radius: 25px;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.beebook-book-info {
+  background: #F5F5DC;
+  padding-top: 10px;
+}
+
+#piece  {
+  max-width:60px;
 }

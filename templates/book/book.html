@@ -1,0 +1,144 @@
+{% extends "layout.html" %}
+{% block title %}{{ book.book_name }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="beebook-obje beebook-book-info col-md-6">
+      <h2 class="title">{{ book.book_name }}</h2>
+      <table class="beebook-table-info">
+        <tr>
+          <td><b>Name: </b></td>
+          <td>{{ book.book_name }}</td>
+        </tr>
+        <tr>
+          <td><b>Authors: </b></td>
+          <td>{% for id, name in authors %}<a href="{{ url_for('books_by_author_page', author_id=id) }}">{{ name }}</a>, {% endfor %}</td>
+        </tr>
+        <tr>
+          <td><b>Categories: </b></td>
+          <td>{% for category in categories %}<a href="{{ url_for('books_by_category_page', category_id=category.category_id) }}">{{ category.category_name }}</a>, {% endfor %}</td>
+        </tr>
+        <tr>
+          <td><b>Release Year: </b></td>
+          <td>{{ book.release_year }}</td>
+        </tr>
+        <tr>
+          <td><b>Explanation: </b></td>
+          <td>{{ book.explanation }}</td>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="table-responsive">
+        <table id="mytable" class="table table-bordred table-striped beebook-table-link">
+          <thead>
+            <th>Detail</th>
+            <th>Edition Number</th>
+            <th>ISBN</th>
+            <th>Publisher</th>
+            <th>Publish Year</th>
+            <th>Number of Pages</th>
+            <th>Languages</th>
+            {% if current_user.is_admin %}
+            <th>Edit</th>
+            <th>Delete</th>
+            {% endif %}
+          </thead>
+          <tbody>
+            {% if editions %}
+            {% for edition in editions %}
+            <tr>
+              <td><a href="{{ url_for('product_page', book_id=edition.book_id, edition_number=edition.edition_number) }}" class="glyphicon glyphicon-search btn btn-primary btn-xs"></a></td>
+              <td>{{ edition.edition_number }}</td>
+              <td>{{ edition.isbn }}</td>
+              <td>{{ edition.publisher }}</td>
+              <td>{{ edition.publish_year }}</td>
+              <td>{{ edition.number_of_pages }}</td>
+              <td>{{ edition.language }}</td>
+              {% if current_user.is_admin %}
+              <td><a href="{{ url_for('book_edition_edit_page', book_id=edition.book_id, edition_number=edition.edition_number) }}" class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></a></td>
+              <td><a href="{{ url_for('book_edition_delete_page', book_id=edition.book_id, edition_number=edition.edition_number) }}" class="glyphicon glyphicon-trash btn btn-danger btn-xs"></a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td colspan="8" style="text-align: center; color: #d70000 ;"><h3>Any edition has been added yet.</h3></td>
+            </tr>
+            {% endif %}
+          </tbody>
+        </table>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    {% if current_user.is_authenticated %}
+    <div class="container beebook-form">
+      {% if err_message_comment %}
+      <div class="alert alert-danger" role="alert">
+        {{ comment_err_message }}
+      </div>
+      {% endif %}
+      <h2 class="title">Add comment</h2>
+      <form action="" method="post" name="add_comment" class="obje-edit-form">
+        <div class="form-group">
+          <label for="comment_title">Title</label>
+          <input type="text" class="form-control" id="comment_title" name="comment_title" placeholder="Title" required="required" value="{{ new_comment_values['comment_title'] }}">
+        </div>
+        <div class="form-group">
+          <label for="comment_statement">Explanation</label>
+          <textarea class="form-control" id="comment_statement" name="comment_statement" placeholder="Explanation" rows="3" required="required">{{ new_comment_values['comment_statement'] }}</textarea>
+        </div>
+        <div class="form-group">
+          <label for="rating">Rate</label>
+          <select class="form-control" id="rating" name="rating" required="required">
+            <option value="0">Select rate...</option>
+            {% for i in range(1,6) %}
+            {% if i == new_comment_values['rating'] %}
+            <option value="{{ i }}" selected>{{ i }}</option>
+            {% else %}
+            <option value="{{ i }}">{{ i }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </form>
+    </div>
+    {% else %}
+    <div class="alert alert-warning beebook-width-325 container" role="alert">
+      <h4> Please <a href="{{ url_for('login_page') }}">Login</a> to post a comment.</h4>
+    </div>
+    {% endif %}
+  </div>
+  <div class="row">
+    <div class="container beebook-comments">
+      <h2 class="title">Comments of the book</h2>
+      {% for comment, customer in comments %}
+      {% if comment.book_id == book.book_id %}
+      <div class="row container beebook-obje beebook-comment">
+        <div class="col-md-11">
+          <p><b>Customer:</b> {{ customer.username }}</p>
+          <p><b>Rate:</b> {{ comment.rating }}</p>
+          <p><b>Title:</b> {{ comment.comment_title }}</p>
+          <p><b>Explanation:</b><br>{{ comment.comment_statement }}</p>
+          <p><b>Updated time:</b>{{ comment.updated_time }}</p>
+        </div>
+        {% if current_user.id == comment.customer_id or current_user.is_admin %}
+        <div class="col-md-1">
+          <a href="{{ url_for('comment_edit_page', comment_id=comment.comment_id) }}" class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></a>
+          <a href="{{ url_for('comment_delete_page', comment_id=comment.comment_id) }}" class="glyphicon glyphicon-trash btn btn-danger btn-xs"></a>
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

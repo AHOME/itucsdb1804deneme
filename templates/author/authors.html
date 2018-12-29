@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block title %}Authors list{% endblock %}
+{% block content %}
+{% if authors %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="title">Authors page</h2>
+      <div class="table-responsive">
+        <table id="mytable" class="table table-bordred table-striped">
+          <thead>
+            <th>Books</th>
+            <th>Author ID</th>
+            <th>Person ID</th>
+            <th>Author Name</th>
+            <th>Surname</th>
+            <th>Gender</th>
+            <th>Date of Birth</th>
+            <th>Nationality</th>
+            {% if current_user.is_admin %}
+            <th>Edit</th>
+            <th>Delete</th>
+            {% endif %}
+          </thead>
+          <tbody>
+            {% for author in authors %}
+            <tr>
+              <td><a href="{{ url_for('books_by_author_page', author_id=author[0].author_id) }}" class="glyphicon glyphicon-search btn btn-primary btn-xs"></a></td>
+              <td>{{ author[0].author_id }}</td>
+              <td>{{ author[1].person_id }}</td>
+              <td>{{ author[1].person_name }}</td>
+              <td>{{ author[1].person_surname }}</td>
+              <td>{{ author[1].gender }}</td>
+              <td>{{ author[1].date_of_birth }}</td>
+              <td>{{ author[1].nationality }}</td>
+              {% if current_user.is_admin %}
+              <td><a href="{{ url_for('author_edit_page', author_id=author[0].author_id) }}"><p title="Edit"><span class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></span></p></a></td>
+              <td><a href="{{ url_for('author_delete_page', author_id=author[0].author_id) }}"><p title="Delete"><span class="glyphicon glyphicon-trash btn btn-danger btn-xs"></span></p></a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

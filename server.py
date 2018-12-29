@@ -1,41 +1,107 @@
-from flask import Flask, render_template
+from flask import Flask, abort, render_template
+from flask_login import LoginManager
 from database import Database
-from tables import *
-import datetime
+from views import *
 
-app = Flask(__name__)
 
+lm = LoginManager()
 db = Database()
-bookdb = db.book
-bookdb.add_book(Book("Enver", 2018, "tip1", 6053326045, 784, "Türkiye İş Bankası Kültür Yayınları"))
-bookdb.add_book(Book("Hayvan Çiftliği", 2018, "tür2", 9750719387, 152, "Can Yayınları"))
-bookdb.add_book(Book("Simyacı", 2018, "tür1", 9750726439, 184, "Can Yayınları"))
-bookdb.add_book(Book("Göçüp Gidenler Koleksiyoncusu", 2018, "tür3", 6602026351, 168, "Doğan Kitap"))
-bookdb.add_book(Book("Osmanlı Gerçekleri", 2018, "tür2", 6050827644, 288, "Timaş Yayınları"))
 
-db.store.add(Store("Store name 1", "+901234567899", 1, "email1@gmail.com", "website1.com", datetime.date(2005, 11, 18), "1 explanation explanation explanationex planationexp lanation "))
-db.store.add(Store("Store name 2", "+904563348645", 2, "email2@gmail.com", "website2.com", datetime.date(2015, 1, 8), "2 explanation explanation explanationex planationexp lanation "))
-db.store.add(Store("Store name 3", "+901456453213", 3, "email3@gmail.com", "website3.com", datetime.date(2018, 8, 25), "3 explanation explanation explanationex planationexp lanation "))
-db.comment.add(Comment(11, "Title 1", "Explanation 1", datetime.datetime.now(), 11))
-    
-@app.route("/")
-def home_page():
-    return render_template("home.html")
 
-@app.route("/books")
-def books_page():
-    books = bookdb.get_books()
-    return render_template("books.html", books=sorted(books))
+@lm.user_loader
+def load_user(user_id):
+    return db.customer.get_row("*", "CUSTOMER_ID", user_id)
 
-@app.route("/stores")
-def stores_page():
-    stores = db.store.get_table()
-    return render_template("stores.html", stores=sorted(stores))
+@lm.unauthorized_handler
+def unauthorized_access():
+    return abort(401)
 
-@app.route("/comments")
-def comments_page():
-    comments = db.comment.get_table()
-    return render_template("comments.html", comments=sorted(comments))
+
+def create_app():
+
+    app = Flask(__name__)
+    app.config.from_object("settings")
+    app.config["db"] = db
+
+    lm.init_app(app)
+    lm.login_view = login_view.login_page
+
+    app.add_url_rule("/", view_func=general_views.home_page)
+    app.add_url_rule("/login", view_func=login_view.login_page, methods=["GET", "POST"])
+    app.add_url_rule("/logout", view_func=login_view.logout_page)
+    app.add_url_rule("/signup", view_func=login_view.signup_page, methods=["GET", "POST"])
+
+    # Book pages
+    app.add_url_rule("/books", view_func=book_view.books_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/add-new", view_func=book_view.book_add_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/<int:book_key>", view_func=book_view.book_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/<int:book_key>/edit", view_func=book_view.book_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/<int:book_key>/delete", view_func=book_view.book_delete_page)
+
+    # Book Edition pages
+    app.add_url_rule("/books/add-edition", view_func=book_edition_view.book_edition_add_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/<int:book_id>/<int:edition_number>", view_func=book_edition_view.book_edition_page)
+    app.add_url_rule("/books/<int:book_id>/<int:edition_number>/edit", view_func=book_edition_view.book_edition_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/books/<int:book_id>/<int:edition_number>/delete", view_func=book_edition_view.book_edition_delete_page, methods=["GET", "POST"])
+
+    # Product pages
+    app.add_url_rule("/products", view_func=product_view.products_page, methods=["GET", "POST"])
+    app.add_url_rule("/products/add-new", view_func=product_view.product_add_page, methods=["GET", "POST"])
+    app.add_url_rule("/products/<int:book_id>/<int:edition_number>", view_func=product_view.product_page, methods=["GET", "POST"])
+    app.add_url_rule("/products/<int:book_id>/<int:edition_number>/edit", view_func=product_view.product_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/products/<int:book_id>/<int:edition_number>/delete", view_func=product_view.product_delete_page, methods=["GET", "POST"])
+
+    # Comment pages
+    app.add_url_rule("/comments", view_func=comment_view.comments_page)
+    app.add_url_rule("/comments/<int:comment_id>/edit", view_func=comment_view.comment_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/comments/<int:comment_id>/delete", view_func=comment_view.comment_delete_page)
+
+    # Transaction (Shopping Cart)
+    app.add_url_rule("/shopping-cart", view_func=transaction_view.transaction_page)
+    app.add_url_rule("/shopping-cart/next", view_func=transaction_view.transaction_next_page, methods=["GET", "POST"])
+    app.add_url_rule("/shopping-cart/tp-<int:transaction_id>-<int:book_id>-<int:edition_number>/delete", view_func=transaction_view.tp_delete_page)
+
+    # Address
+    app.add_url_rule("/addresses", view_func=address_view.addresses_page)
+    app.add_url_rule("/addresses/add-new", view_func=address_view.add_address, methods=["GET", "POST"])
+    app.add_url_rule("/addresses/<int:address_id>/edit", view_func=address_view.address_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/addresses/<int:address_id>/delete", view_func=address_view.address_delete_page, methods=["GET", "POST"])
+
+    # Author
+    app.add_url_rule("/authors", view_func=author_view.authors_page)
+    app.add_url_rule("/authors/add-new", view_func=author_view.add_author, methods=["GET", "POST"])
+    app.add_url_rule("/authors/<int:author_id>/edit", view_func=author_view.author_edit_page, methods=["GET", "POST"])
+    app.add_url_rule("/authors/<int:author_id>/delete", view_func=author_view.author_delete_page, methods=["GET", "POST"])
+    app.add_url_rule("/authors/<int:author_id>/books", view_func=author_view.books_by_author_page, methods=["GET", "POST"])
+
+    # Category
+    app.add_url_rule("/categories", view_func=category_view.categories_page)
+    app.add_url_rule("/categories/<int:category_id>/books", view_func=category_view.books_by_category_page, methods=["GET", "POST"])
+
+    # Customer
+    app.add_url_rule("/customers", view_func=customer_view.customers_page)
+    app.add_url_rule("/customers/<int:customer_id>/edit", view_func=customer_view.edit_customer_page, methods=["GET", "POST"])
+    app.add_url_rule("/customers/<int:customer_id>/delete", view_func=customer_view.delete_customer_page, methods=["GET", "POST"])
+
+    return app
+
+
+app = create_app()
+
+@app.errorhandler(401)
+def unauthorized_access_page(err):
+    return render_template("error/401.html")
+
+@app.errorhandler(403)
+def access_denied_page(err):
+    return render_template("error/403.html")
+
+@app.errorhandler(404)
+def page_not_found(err):
+    return render_template("error/404.html")
+
+
 
 if __name__ == "__main__":
-    app.run()
+    port = app.config.get("PORT", 5000)
+    app.run(host="0.0.0.0", port=port)

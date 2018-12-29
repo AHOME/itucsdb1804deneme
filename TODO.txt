@@ -1,5 +1,10 @@
 // FORMAT -> TODO <Type> : <Person Initials> - <Description of task>
 
-TODO FIX : __ - Error that domain and tables already exist
-TODO FIX : __ - Why insert duplicate rows?
-TODO CREATE : my - Database operations for Comment tables
+TODO ADD : MY - Ürünler ile ilgili sayfaların bağlantılarını menüye ve sayfalardaki ilgili yerlere koy
+TODO ADD : MY - Ürün silme bağlantıları
+TODO ADD : MY - Ürünler is active -> sayfa var-yok / satış yok-var
+TODO ADD : MY -
+TODO ADD : MY - Kategoriler
+TODO ADD : MY - Verilen tüm siparişlerin sayfası
+
+TODO ADD : AYK - Üye olunurken db'ye Transaction/Sepet ekleme

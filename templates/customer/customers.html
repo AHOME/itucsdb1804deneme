@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block title %}Customers list{% endblock %}
+{% block content %}
+{% if customers %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2 class="title">Customers page</h2>
+      <div class="table-responsive">
+        <table id="mytable" class="table table-bordred table-striped">
+          <thead>
+            <th>Customer_ID</th>
+            <th>Person_ID</th>
+            <th>Username</th>
+            <th>E-mail</th>
+            <th>Phone</th>
+            <th>Is_Active?</th>
+            {% if current_user.is_admin %}
+            <th>Edit</th>
+            <th>Delete</th>
+            {% endif %}
+          </thead>
+          <tbody>
+            {% for customer in customers %}
+            <tr>
+              <td>{{ customer.id }}</td>
+              <td>{{ customer.person_id }}</td>
+              <td>{{ customer.username }}</td>
+              <td>{{ customer.email }}</td>
+              <td>{{ customer.phone }}</td>
+              <td>{{ customer.is_active }}</td>
+              {% if current_user.is_admin %}
+              <td><a href="{{ url_for('edit_customer_page', customer_id=customer.id) }}"><p title="Edit"><span class="glyphicon glyphicon-pencil btn btn-primary btn-xs"></span></p></a></td>
+              <td><a href="{{ url_for('delete_customer_page', customer_id=customer.id) }}"><p title="Delete"><span class="glyphicon glyphicon-trash btn btn-danger btn-xs"></span></p></a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
